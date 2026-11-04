@@ -4,802 +4,673 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aurevia Cards | CC Collection</title>
-
+<title>Aurevia Cards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-
 <style>
-:root{
- --gold:#d6b477;
- --dark:#10100f;
- --panel:#191917;
- --muted:#99958b;
- --white:#f7f3e9;
+:root {
+  --gold: #d6b66e;
+  --gold-light: #f1d99e;
+  --bg: #090909;
+  --panel: #141414;
+  --muted: #999;
+  --white: #f7f3e9;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{
- background:var(--dark);
- color:var(--white);
- font-family:'DM Sans',sans-serif;
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
 }
-header{
- height:75px;
- display:flex;
- align-items:center;
- justify-content:space-between;
- padding:0 7%;
- border-bottom:1px solid #343027;
- background:#10100f;
- position:sticky;
- top:0;
- z-index:10;
+header {
+  padding: 24px 18px;
+  text-align: center;
+  border-bottom: 1px solid rgba(214,182,110,.2);
 }
-.logo{
- font-family:'Playfair Display',serif;
- font-size:25px;
- letter-spacing:2px;
- color:var(--gold);
+.brand {
+  font-family: 'Playfair Display', serif;
+  color: var(--gold-light);
+  font-size: 29px;
+  letter-spacing: 2px;
 }
-.logo span{color:white}
-.header-label{
- color:#a9a397;
- font-size:11px;
- letter-spacing:1px;
+.brand-sub {
+  color: #888;
+  font-size: 9px;
+  letter-spacing: 4px;
+  margin-top: 5px;
 }
-.section{
- max-width:850px;
- margin:auto;
- padding:30px 20px 70px;
+.filters {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 22px 12px;
+  flex-wrap: wrap;
 }
-.filters{
- display:flex;
- gap:9px;
- margin-bottom:22px;
- flex-wrap:wrap;
+.filter-btn {
+  border: 1px solid #51452e;
+  background: transparent;
+  color: #c8b98f;
+  border-radius: 30px;
+  padding: 9px 23px;
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 1px;
 }
-.filter{
- border:1px solid #494337;
- background:transparent;
- color:#c7bda9;
- padding:10px 19px;
- border-radius:25px;
- cursor:pointer;
- font-size:11px;
+.filter-btn.active {
+  background: linear-gradient(120deg,#d9bd7d,#a9843e);
+  color: #17120a;
+  border-color: var(--gold);
 }
-.filter.active{
- background:var(--gold);
- color:#17130c;
- border-color:var(--gold);
+.products {
+  width: min(100% - 28px, 540px);
+  margin: 0 auto 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
 }
-
-/* PRODUCT CARD */
-.product{
- background:var(--panel);
- border:1px solid #343027;
- border-radius:13px;
- padding:17px;
- margin-bottom:20px;
- transition:.25s;
+.product {
+  background: linear-gradient(145deg,#191919,#101010);
+  border: 1px solid rgba(214,182,110,.19);
+  border-radius: 17px;
+  padding: 17px;
+  box-shadow: 0 12px 35px rgba(0,0,0,.3);
 }
-.product:hover{border-color:#a98b56}
-
-.card-art{
- height:195px;
- width:100%;
- max-width:380px;
- margin:0 auto 18px;
- padding:22px;
- border-radius:13px;
- position:relative;
- overflow:hidden;
- display:flex;
- flex-direction:column;
- justify-content:space-between;
- background:
- radial-gradient(circle at 85% 10%,#a58a5c55,transparent 40%),
- linear-gradient(125deg,#39352d,#11110f 60%,#6b5532);
- border:1px solid #b69a6577;
- box-shadow:0 12px 25px #0007;
+.product-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 13px;
 }
-.card-art::before{
- content:"";
- position:absolute;
- width:210px;
- height:210px;
- border:1px solid #ffffff22;
- border-radius:50%;
- right:-80px;
- top:-100px;
- box-shadow:0 0 0 20px #ffffff09,0 0 0 40px #ffffff05;
+.product-name {
+  color: var(--gold-light);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
-.card-top,.card-middle,.card-bottom{
- position:relative;
- z-index:1;
+.network-tag {
+  color: #aaa;
+  font-size: 10px;
+  letter-spacing: 1px;
 }
-.card-top{
- display:flex;
- justify-content:space-between;
- font-size:10px;
- letter-spacing:2px;
- color:#e8d7b2;
+.credit-card {
+  width: 100%;
+  aspect-ratio: 1.65 / 1;
+  border-radius: 14px;
+  padding: 19px;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 85% 15%,rgba(255,255,255,.18),transparent 30%),
+    linear-gradient(125deg,#4b402c,#171714 48%,#75613c);
+  border: 1px solid rgba(239,214,159,.48);
+  box-shadow: 0 8px 22px rgba(0,0,0,.45);
 }
-.chip{
- width:37px;
- height:28px;
- border-radius:5px;
- background:linear-gradient(135deg,#ebd8a7,#907144);
- border:1px solid #fff5;
- margin-bottom:12px;
+.credit-card.master {
+  background:
+    radial-gradient(circle at 80% 15%,rgba(255,255,255,.16),transparent 30%),
+    linear-gradient(125deg,#282522,#111,#514332);
 }
-.card-number{
- font-size:15px;
- letter-spacing:2px;
- color:#f1dfbb;
+.card-glow {
+  position: absolute;
+  width: 190px;
+  height: 190px;
+  right: -70px;
+  bottom: -100px;
+  border: 1px solid rgba(255,225,165,.23);
+  border-radius: 50%;
+  box-shadow: 0 0 0 18px rgba(255,225,165,.035),0 0 0 38px rgba(255,225,165,.025);
 }
-.card-bottom{
- display:flex;
- justify-content:space-between;
- align-items:end;
- color:#e6d5b2;
- font-size:10px;
+.card-brand {
+  font-family: 'Playfair Display',serif;
+  font-size: 17px;
+  letter-spacing: 2px;
+  color: #f2dfb4;
 }
-.card-holder{
- font-size:12px;
- letter-spacing:1px;
- margin-top:5px;
+.card-chip {
+  width: 35px;
+  height: 27px;
+  border-radius: 6px;
+  background: linear-gradient(135deg,#e7d5a3,#9d8855);
+  margin-top: 18px;
+  border: 1px solid rgba(255,255,255,.3);
 }
-.card-network{
- font-size:22px;
- font-weight:800;
- font-style:italic;
+.card-number {
+  font-size: clamp(14px,4vw,19px);
+  letter-spacing: 2px;
+  margin-top: 17px;
+  color: #f6e9cb;
 }
-
-.product-info{
- max-width:550px;
- margin:auto;
+.card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-top: 17px;
+  position: relative;
+  z-index: 1;
 }
-.product-title{
- font-size:17px;
- font-weight:700;
- margin-bottom:14px;
+.card-holder {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: #e0d2b4;
 }
-.balance{
- background:#252116;
- border:1px solid #80673d;
- padding:15px;
- border-radius:8px;
+.card-valid {
+  font-size: 10px;
+  color: #e0d2b4;
 }
-.balance span{
- display:block;
- color:#aaa18e;
- font-size:11px;
- margin-bottom:8px;
+.card-network {
+  font-size: 20px;
+  font-weight: 700;
+  font-style: italic;
+  color: #f4e5c2;
 }
-.balance strong{
- color:var(--gold);
- font-size:25px;
+.balance-line {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 17px;
+  color: #aaa;
+  font-size: 11px;
+  letter-spacing: 1.2px;
 }
-.buy{
- width:100%;
- padding:15px;
- margin-top:14px;
- border:0;
- border-radius:6px;
- background:linear-gradient(110deg,#b38a4d,#e6cb92);
- color:#17130c;
- font-weight:800;
- font-size:13px;
- cursor:pointer;
+.balance-value {
+  color: var(--gold-light);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: .2px;
 }
-.buy:hover{filter:brightness(1.1)}
-.free-product{border-color:#a58a5c}
-.free-label{
- color:var(--gold);
- font-size:10px;
- letter-spacing:2px;
- margin-bottom:12px;
+.buy-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 13px;
 }
-
-/* CHECKOUT */
-.overlay{
- display:none;
- position:fixed;
- inset:0;
- z-index:30;
- background:#000d;
- overflow-y:auto;
- padding:20px 12px;
- align-items:center;
- justify-content:center;
+.buy-btn {
+  min-width: 165px;
+  padding: 13px 20px;
+  border: 0;
+  border-radius: 8px;
+  background: linear-gradient(120deg,#f0d99e,#bd984f);
+  color: #17120a;
+  font-family: 'DM Sans',sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .7px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(214,182,110,.15);
+  transition: .2s;
 }
-.modal{
- width:100%;
- max-width:460px;
- margin:auto;
- padding:25px;
- background:#191917;
- border:1px solid #77603a;
- border-radius:14px;
- position:relative;
+.buy-btn:hover { transform: translateY(-2px); filter: brightness(1.08); }
+.buy-btn.free { background: linear-gradient(120deg,#eee1bf,#c9b27c); }
+footer {
+  text-align: center;
+  color: #686868;
+  font-size: 10px;
+  padding: 25px 12px 35px;
+  border-top: 1px solid #222;
+  line-height: 1.7;
 }
-.close{
- position:absolute;
- top:13px;
- right:17px;
- border:0;
- background:none;
- color:white;
- font-size:27px;
- cursor:pointer;
+/* Checkout */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: rgba(0,0,0,.84);
+  overflow-y: auto;
+  padding: 20px 12px;
 }
-.modal h2{
- font-family:'Playfair Display',serif;
- font-size:27px;
- font-weight:500;
+.modal.show { display: block; }
+.modal-box {
+  width: min(100%,440px);
+  margin: 15px auto;
+  background: #151515;
+  border: 1px solid rgba(214,182,110,.35);
+  border-radius: 17px;
+  padding: 22px;
+  position: relative;
 }
-.muted{
- color:var(--muted);
- font-size:12px;
- line-height:1.7;
- margin-top:6px;
+.close {
+  position: absolute;
+  top: 13px;
+  right: 16px;
+  background: none;
+  border: 0;
+  color: #aaa;
+  font-size: 25px;
+  cursor: pointer;
 }
-.summary{
- margin:20px 0;
- padding:17px;
- background:#24231f;
- border:1px solid #39352b;
- border-radius:9px;
+.modal-title {
+  color: var(--gold-light);
+  font-family: 'Playfair Display',serif;
+  font-size: 24px;
+  margin: 0 0 18px;
 }
-.summary-row{
- display:flex;
- justify-content:space-between;
- gap:10px;
- margin:11px 0;
- font-size:12px;
- color:#aaa69c;
+.order-details {
+  background: #202020;
+  border: 1px solid #34302a;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 17px;
 }
-.summary-row strong{
- color:white;
- text-align:right;
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+  padding: 7px 0;
+  color: #aaa;
 }
-.summary-row.total{
- border-top:1px solid #494337;
- padding-top:14px;
+.detail-row strong {
+  color: #f1e5c8;
+  text-align: right;
 }
-.summary-row.total strong{
- color:var(--gold);
- font-size:21px;
+.detail-row.total {
+  border-top: 1px solid #49402e;
+  margin-top: 5px;
+  padding-top: 12px;
+  font-size: 14px;
 }
-.qr-area{
- text-align:center;
- padding:20px 10px;
- background:#f8f6f0;
- border-radius:9px;
- margin:15px 0;
- color:#171717;
+.detail-row.total strong { color: var(--gold-light); }
+.section-label {
+  color: #d8c18d;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin: 15px 0 10px;
 }
-#qrcode{
- display:flex;
- justify-content:center;
- margin:13px auto;
+.qr-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 13px;
+  background: white;
+  border-radius: 10px;
+  width: fit-content;
+  margin: 0 auto 10px;
+  min-width: 164px;
+  min-height: 164px;
 }
-.qr-area p{
- font-size:11px;
- line-height:1.7;
+#qrcode { display: flex; align-items: center; justify-content: center; }
+#qrcode img, #qrcode canvas { max-width: 150px; }
+.scan-note {
+  text-align: center;
+  color: #aaa;
+  font-size: 11px;
+  margin: 8px 0 12px;
 }
-.pay-btn,.confirm-btn{
- display:block;
- width:100%;
- padding:14px;
- border:0;
- border-radius:6px;
- background:var(--gold);
- color:#17130c;
- font-weight:800;
- cursor:pointer;
- text-align:center;
- text-decoration:none;
- font-size:12px;
- margin-top:12px;
+.timer {
+  text-align: center;
+  color: var(--gold-light);
+  font-size: 13px;
+  margin: 10px 0 13px;
+  background: #211d15;
+  border: 1px solid #4c3e25;
+  padding: 9px;
+  border-radius: 7px;
 }
-.secondary{
- width:100%;
- padding:13px;
- background:transparent;
- color:var(--gold);
- border:1px solid #78603a;
- border-radius:6px;
- cursor:pointer;
- margin-top:10px;
- font-size:12px;
+.timer strong { font-size: 17px; margin-left: 5px; }
+.upi-btn, .confirm-btn {
+  display: block;
+  text-decoration: none;
+  text-align: center;
+  width: 100%;
+  padding: 13px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  cursor: pointer;
 }
-.status{
- padding:13px;
- background:#28251c;
- border-radius:6px;
- color:#e2c58c;
- font-size:11px;
- margin-top:14px;
- line-height:1.7;
+.upi-btn {
+  color: #17120a;
+  background: linear-gradient(120deg,#f0d99e,#bd984f);
+  margin-bottom: 10px;
 }
-
-/* SAMPLE RECEIPT */
-.receipt{
- display:none;
- margin-top:18px;
- border:1px solid #80673d;
- background:#211e17;
- border-radius:9px;
- padding:18px;
+.confirm-btn {
+  background: transparent;
+  border: 1px solid #8c7445;
+  color: #e4d1a5;
 }
-.receipt h3{
- font-family:'Playfair Display',serif;
- color:var(--gold);
- font-size:21px;
- margin-bottom:7px;
+.payment-note {
+  color: #999;
+  font-size: 11px;
+  line-height: 1.6;
+  text-align: center;
+  margin: 12px 0;
 }
-.receipt-sub{
- font-size:10px;
- color:#aaa18e;
- margin-bottom:15px;
+.status {
+  display: none;
+  background: #211d15;
+  border: 1px solid #66512e;
+  padding: 13px;
+  border-radius: 8px;
+  color: #e6d4aa;
+  font-size: 12px;
+  line-height: 1.6;
+  margin-top: 13px;
+  text-align: center;
 }
-.receipt-row{
- display:flex;
- justify-content:space-between;
- gap:12px;
- padding:11px 0;
- border-bottom:1px solid #3b3529;
- font-size:11px;
+.status.show { display: block; }
+.receipt {
+  display: none;
+  margin-top: 15px;
+  border: 1px solid #66512e;
+  background: #211d15;
+  border-radius: 10px;
+  padding: 15px;
 }
-.receipt-row span{color:#aaa18e}
-.receipt-row strong{
- color:white;
- text-align:right;
+.receipt.show { display: block; }
+.receipt h3 {
+  color: var(--gold-light);
+  margin: 0 0 10px;
+  font-family: 'Playfair Display',serif;
 }
-.receipt-note{
- margin-top:14px;
- color:#d6b477;
- font-size:10px;
- line-height:1.7;
+.receipt p {
+  font-size: 12px;
+  color: #d3c7aa;
+  margin: 8px 0;
 }
-footer{
- padding:30px;
- text-align:center;
- border-top:1px solid #343027;
- color:#77736a;
- font-size:11px;
- line-height:2;
-}
-footer strong{color:var(--gold)}
-
-@media(max-width:600px){
- header{padding:0 17px;height:65px}
- .logo{font-size:21px}
- .header-label{font-size:9px}
- .section{padding:25px 13px 55px}
- .card-art{height:180px}
- .product{padding:12px}
+@media(max-width:380px) {
+  .product { padding: 13px; }
+  .credit-card { padding: 15px; }
+  .balance-line { font-size: 10px; }
+  .balance-value { font-size: 15px; }
+  .buy-btn { min-width: 145px; }
 }
 </style>
 </head>
-
 <body>
 
 <header>
- <div class="logo">AUREVIA <span>CARDS</span></div>
- <div class="header-label">PREMIUM COLLECTION</div>
+  <div class="brand">AUREVIA</div>
+  <div class="brand-sub">CARDS &nbsp;•&nbsp; EXCLUSIVE COLLECTION</div>
 </header>
 
-<main class="section">
+<nav class="filters">
+  <button class="filter-btn active" data-filter="all">ALL CARDS</button>
+  <button class="filter-btn" data-filter="visa">VISA</button>
+  <button class="filter-btn" data-filter="mastercard">MASTERCARD</button>
+</nav>
 
- <div class="filters">
-  <button class="filter active" onclick="filterCards('all',this)">All Cards</button>
-  <button class="filter" onclick="filterCards('visa',this)">Visa</button>
-  <button class="filter" onclick="filterCards('mastercard',this)">Mastercard</button>
- </div>
-
- <div id="products"></div>
-
-</main>
+<main class="products" id="products"></main>
 
 <footer>
- <strong>AUREVIA CARDS</strong><br>
- Premium CC Experience<br>
- © 2026 Aurevia. All rights reserved.<br>
- Fictional product previews. Not bank-issued payment credentials.
+  AUREVIA CARDS<br>
+  Fictional product previews. Not bank-issued payment credentials.
 </footer>
 
-<div class="overlay" id="checkout">
- <div class="modal">
+<div class="modal" id="checkoutModal">
+  <div class="modal-box">
+    <button class="close" onclick="closeCheckout()" aria-label="Close">&times;</button>
+    <h2 class="modal-title">Secure Checkout</h2>
 
-  <button class="close" onclick="closeCheckout()">×</button>
+    <div class="order-details">
+      <div class="detail-row"><span>Product</span><strong id="checkoutName">—</strong></div>
+      <div class="detail-row"><span>Network</span><strong id="checkoutNetwork">—</strong></div>
+      <div class="detail-row"><span>CC Balance</span><strong id="checkoutBalance">—</strong></div>
+      <div class="detail-row"><span>Order ID</span><strong id="orderId">—</strong></div>
+      <div class="detail-row total"><span>Amount Payable</span><strong id="checkoutPrice">—</strong></div>
+    </div>
 
-  <h2>Secure Checkout</h2>
-  <p class="muted">Review your selected CC product.</p>
+    <div id="paymentArea">
+      <div class="section-label">SCAN & PAY WITH UPI</div>
+      <div class="qr-wrap"><div id="qrcode"></div></div>
+      <div class="scan-note">Scan using preferred UPI application</div>
+      <div class="timer">Complete your payment within <strong id="countdown">05:00</strong></div>
+      <a class="upi-btn" id="upiLink" href="#">PAY WITH UPI</a>
+      <button class="confirm-btn" onclick="requestVerification()">I'VE COMPLETED PAYMENT</button>
+      <p class="payment-note">
+        Your payment will be verified after confirmation from the payment gateway.
+        Your sample or order details will appear here once verification is complete.
+      </p>
+      <div class="status" id="paymentStatus"></div>
+    </div>
 
-  <div class="summary">
-
-   <div class="summary-row">
-    <span>Product</span>
-    <strong id="orderName"></strong>
-   </div>
-
-   <div class="summary-row">
-    <span>Network</span>
-    <strong id="orderNetwork"></strong>
-   </div>
-
-   <div class="summary-row">
-    <span>CC Balance</span>
-    <strong id="orderBalance"></strong>
-   </div>
-
-   <div class="summary-row">
-    <span>Order ID</span>
-    <strong id="orderId"></strong>
-   </div>
-
-   <div class="summary-row total">
-    <span>Amount Payable</span>
-    <strong id="orderPrice"></strong>
-   </div>
-
+    <div class="receipt" id="sampleReceipt">
+      <h3>Sample Profile</h3>
+      <p><strong>Holder:</strong> <span id="sampleName"></span></p>
+      <p><strong>Card Number:</strong> <span id="sampleNumber"></span></p>
+      <p><strong>Expiry:</strong> 12/29</p>
+      <p><strong>Issuer:</strong> Aurevia Sample Issuer</p>
+      <p><strong>Network:</strong> <span id="sampleNetwork"></span></p>
+      <p><strong>Country:</strong> Sample / Fictional</p>
+      <p style="font-size:10px;color:#a99b7b">
+        This is a fictional, non-functional sample profile. It is not a bank-issued card.
+      </p>
+    </div>
   </div>
-
-  <div id="paymentArea">
-
-   <div class="qr-area">
-    <strong>SCAN & PAY WITH UPI</strong>
-    <div id="qrcode"></div>
-    <p>Scan using your preferred UPI application.<br>
-    Verify the merchant and amount before paying.</p>
-   </div>
-
-   <a class="pay-btn" id="upiLink" href="#">PAY WITH UPI</a>
-
-  </div>
-
-  <button class="confirm-btn" id="confirmBtn" onclick="confirmPayment()">
-   I'VE COMPLETED PAYMENT
-  </button>
-
-  <div class="status" id="paymentStatus">
-   Payment status: Awaiting payment.
-  </div>
-
-  <div class="receipt" id="receipt">
-   <h3>Order Receipt</h3>
-   <div class="receipt-sub">AUREVIA · FICTIONAL SAMPLE PROFILE</div>
-
-   <div class="receipt-row">
-    <span>Cardholder</span>
-    <strong id="rName"></strong>
-   </div>
-
-   <div class="receipt-row">
-    <span>Card Number</span>
-    <strong id="rNumber"></strong>
-   </div>
-
-   <div class="receipt-row">
-    <span>Expiry Date</span>
-    <strong id="rExpiry"></strong>
-   </div>
-
-   <div class="receipt-row">
-    <span>Bank / Issuer</span>
-    <strong id="rBank"></strong>
-   </div>
-
-   <div class="receipt-row">
-    <span>Card Type</span>
-    <strong id="rType"></strong>
-   </div>
-
-   <div class="receipt-row">
-    <span>Country</span>
-    <strong id="rCountry"></strong>
-   </div>
-
-   <div class="receipt-note">
-    This is a fictional, non-functional sample receipt.
-    It contains no usable card number, CVV or ATM PIN.
-   </div>
-  </div>
-
-  <button class="secondary" onclick="closeCheckout()">CLOSE CHECKOUT</button>
-
- </div>
 </div>
 
 <script>
-const UPI_ID="ephylz@ptsbi";
-const MERCHANT="Aurevia Cards";
+const UPI_ID = "ephylz@ptsbi";
+const UPI_NAME = "Aurevia Cards";
 
-const names=[
- "James Anderson",
- "William Bennett",
- "Oliver Thompson",
- "Benjamin Carter",
- "Henry Mitchell",
- "Daniel Parker",
- "Alexander Brooks",
- "Ethan Morgan",
- "Lucas Harrison",
- "Michael Foster",
- "Nathan Collins",
- "Ryan Cooper",
- "Christopher Reed",
- "Matthew Wilson"
+const names = [
+  "Oliver Bennett", "Ethan Carter", "Noah Williams",
+  "Liam Anderson", "Lucas Mitchell", "James Parker",
+  "Henry Morgan", "Daniel Brooks", "Benjamin Reed"
 ];
 
-const banks=[
- "Sample National Bank",
- "Aurevia Financial",
- "Continental Sample Bank",
- "Northstar Financial",
- "Heritage Sample Bank"
-];
-
-const products=document.getElementById("products");
-
-let selected=null;
-
-const denominations=[];
-for(let price=300;price<=2500;price+=50){
- denominations.push(price);
-}
-
-// Illustrative balance: starts at 15,000.
-// Each 50 rupee increase adds 5,500.
-
-function getBalance(price){
- if(price===0)return 0;
- return 15000+((price-300)/50)*5500;
-}
-
-function maskedPrefix(index){
- const prefixes=[
-  "4532 18",
-  "5264 39",
-  "4718 62",
-  "5412 75",
-  "4926 31",
-  "5198 44"
- ];
- return prefixes[index%prefixes.length]+"•••• ••••";
-}
-
-function makeCard(price,index,network,isFree=false){
-
- const name=names[index%names.length];
- const balance=getBalance(price);
-
- const card=document.createElement("article");
-
- card.className="product"+(isFree?" free-product":"");
- card.dataset.network=network;
-
- card.innerHTML=`
-
-  ${isFree?'<div class="free-label">FREE TEST PRODUCT</div>':''}
-
-  <div class="card-art">
-
-   <div class="card-top">
-    <span>AUREVIA PRIVATE</span>
-    <span>PREMIUM</span>
-   </div>
-
-   <div class="card-middle">
-    <div class="chip"></div>
-    <div class="card-number">${maskedPrefix(index)}</div>
-   </div>
-
-   <div class="card-bottom">
-    <div>
-     <span>VALID THRU</span>
-     <div>12/29</div>
-     <div class="card-holder">${name.toUpperCase()}</div>
-    </div>
-    <span class="card-network">${network.toUpperCase()}</span>
-   </div>
-
-  </div>
-
-  <div class="product-info">
-
-   <div class="product-title">Aurevia ${network.toUpperCase()} CC</div>
-
-   <div class="balance">
-    <span>CC BALANCE</span>
-    <strong>₹${balance.toLocaleString("en-IN")}</strong>
-   </div>
-
-   <button class="buy"
-    onclick="openCheckout(${price},'${network}',${balance},${isFree},${index})">
-
-    ${isFree?"TRY FREE": "BUY NOW ₹"+price.toLocaleString("en-IN")}
-
-   </button>
-
-  </div>
- `;
-
- return card;
-}
-
-function createProducts(){
-
- products.innerHTML="";
-
- products.appendChild(
-  makeCard(0,0,"visa",true)
- );
-
- denominations.forEach((price,index)=>{
-
-  const network=index%2===0?"visa":"mastercard";
-
-  products.appendChild(
-   makeCard(price,index+1,network)
-  );
-
- });
-
-}
-
-function filterCards(type,button){
-
- document.querySelectorAll(".filter").forEach(el=>{
-  el.classList.remove("active");
- });
-
- button.classList.add("active");
-
- document.querySelectorAll(".product").forEach(card=>{
-  card.style.display=
-   type==="all"||card.dataset.network===type?"":"none";
- });
-
-}
-
-function openCheckout(price,network,balance,isFree,index){
-
- selected={price,network,balance,isFree,index};
-
- const orderId="AUR"+Date.now().toString().slice(-10);
-
- document.getElementById("orderName").textContent=
-  "Aurevia "+network.toUpperCase()+" CC";
-
- document.getElementById("orderNetwork").textContent=
-  network.toUpperCase();
-
- document.getElementById("orderBalance").textContent=
-  "₹"+balance.toLocaleString("en-IN");
-
- document.getElementById("orderId").textContent=orderId;
-
- document.getElementById("orderPrice").textContent=
-  price===0?"FREE":"₹"+price.toLocaleString("en-IN");
-
- document.getElementById("receipt").style.display="none";
-
- document.getElementById("paymentArea").style.display=
-  isFree?"none":"block";
-
- const confirmBtn=document.getElementById("confirmBtn");
-
- confirmBtn.disabled=false;
- confirmBtn.style.opacity="1";
- confirmBtn.style.display="block";
-
- confirmBtn.textContent=
-  isFree?"COMPLETE FREE TEST":"I'VE COMPLETED PAYMENT";
-
- document.getElementById("paymentStatus").textContent=
-  isFree
-  ?"Free test available. No payment required."
-  :"Payment status: Awaiting payment verification.";
-
- const qr=document.getElementById("qrcode");
- qr.innerHTML="";
-
- if(!isFree){
-
-  const upiUrl=
-   "upi://pay?pa="+encodeURIComponent(UPI_ID)+
-   "&pn="+encodeURIComponent(MERCHANT)+
-   "&am="+price+
-   "&cu=INR"+
-   "&tn="+encodeURIComponent("Order "+orderId);
-
-  document.getElementById("upiLink").href=upiUrl;
-
-  if(typeof QRCode!=="undefined"){
-   new QRCode(qr,{
-    text:upiUrl,
-    width:180,
-    height:180,
-    correctLevel:QRCode.CorrectLevel.H
-   });
-  }
-
- }
-
- document.getElementById("checkout").style.display="flex";
- document.body.style.overflow="hidden";
-
-}
-
-function confirmPayment(){
-
- if(!selected)return;
-
- const btn=document.getElementById("confirmBtn");
- const status=document.getElementById("paymentStatus");
-
- if(selected.isFree){
-
-  const index=selected.index;
-
-  document.getElementById("rName").textContent=
-   names[index%names.length];
-
-  document.getElementById("rNumber").textContent=
-   maskedPrefix(index);
-
-  document.getElementById("rExpiry").textContent="12/29";
-
-  document.getElementById("rBank").textContent=
-   banks[index%banks.length];
-
-  document.getElementById("rType").textContent=
-   selected.network.toUpperCase()+" CC";
-
-  document.getElementById("rCountry").textContent="United States";
-
-  document.getElementById("receipt").style.display="block";
-
-  status.textContent=
-   "FREE TEST COMPLETED. This is a simulated checkout, not a real payment.";
-
-  btn.style.display="none";
-
-  return;
- }
-
- // A real paid order must be verified by a payment
- // gateway on a secure server before being completed.
-
- status.textContent=
-  "Payment confirmation requested. Payment is still pending. A verified payment gateway response is required.";
-
- btn.textContent="AWAITING PAYMENT VERIFICATION";
- btn.disabled=true;
- btn.style.opacity=".6";
-
-}
-
-function closeCheckout(){
-
- document.getElementById("checkout").style.display="none";
-
- document.body.style.overflow="auto";
-
- document.getElementById("confirmBtn").disabled=false;
- document.getElementById("confirmBtn").style.opacity="1";
-
-}
-
-document.getElementById("checkout").addEventListener("click",function(e){
- if(e.target===this)closeCheckout();
+const products = [];
+let nextBalance = 4500;
+
+// Free sample product
+products.push({
+  id: "FREE-TEST",
+  price: 0,
+  balance: 4500,
+  network: "visa",
+  free: true
 });
 
-createProducts();
-</script>
+// Prices from ₹300 to ₹2,500 in ₹50 increments.
+// Each new price level adds a varying ₹1,500–₹2,500.
+for (let price = 300; price <= 2500; price += 50) {
+  const increase = 1500 + ((price / 50 * 173) % 1001);
+  nextBalance += increase;
 
+  products.push({
+    id: "AUR-" + price,
+    price,
+    balance: nextBalance,
+    network: (price / 50) % 2 === 0 ? "visa" : "mastercard",
+    free: false
+  });
+}
+
+const money = amount => "₹" + Number(amount).toLocaleString("en-IN");
+
+function maskedNumber(index) {
+  const prefixes = ["4532 18", "5214 63", "4556 72", "5412 39", "4761 84"];
+  return prefixes[index % prefixes.length] + "•••• ••••";
+}
+
+function renderProducts(filter = "all") {
+  const container = document.getElementById("products");
+  container.innerHTML = "";
+
+  products.filter(p => filter === "all" || p.network === filter)
+  .forEach((p, index) => {
+    const originalIndex = products.indexOf(p);
+    const networkName = p.network === "visa" ? "VISA" : "MASTERCARD";
+
+    const card = document.createElement("article");
+    card.className = "product";
+
+    card.innerHTML = `
+      <div class="product-top">
+        <div class="product-name">AUREVIA ${networkName} CC</div>
+        <div class="network-tag">${networkName}</div>
+      </div>
+
+      <div class="credit-card ${p.network === "mastercard" ? "master" : ""}">
+        <div class="card-glow"></div>
+        <div class="card-brand">AUREVIA</div>
+        <div class="card-chip"></div>
+        <div class="card-number">${maskedNumber(originalIndex)}</div>
+        <div class="card-bottom">
+          <div>
+            <div class="card-holder">CARD MEMBER</div>
+            <div class="card-valid">VALID THRU &nbsp; 12/29</div>
+          </div>
+          <div class="card-network">${networkName}</div>
+        </div>
+      </div>
+
+      <div class="balance-line">
+        <span>CC BALANCE</span>
+        <span class="balance-value">${money(p.balance)}</span>
+      </div>
+
+      <div class="buy-row">
+        <button class="buy-btn ${p.free ? "free" : ""}" onclick="openCheckout('${p.id}')">
+          ${p.free ? "TRY FREE" : "BUY NOW " + money(p.price)}
+        </button>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+document.querySelectorAll(".filter-btn").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    button.classList.add("active");
+    renderProducts(button.dataset.filter);
+  });
+});
+
+let timerInterval = null;
+let secondsRemaining = 300;
+let selectedProduct = null;
+
+function openCheckout(id) {
+  selectedProduct = products.find(p => p.id === id);
+  if (!selectedProduct) return;
+
+  document.getElementById("checkoutModal").classList.add("show");
+  document.getElementById("checkoutName").textContent =
+    "Aurevia " + selectedProduct.network.toUpperCase() + " CC";
+  document.getElementById("checkoutNetwork").textContent =
+    selectedProduct.network.toUpperCase();
+  document.getElementById("checkoutBalance").textContent =
+    money(selectedProduct.balance);
+  document.getElementById("checkoutPrice").textContent =
+    selectedProduct.free ? "FREE" : money(selectedProduct.price);
+  document.getElementById("orderId").textContent =
+    "AUR" + Date.now().toString().slice(-9);
+
+  document.getElementById("paymentStatus").classList.remove("show");
+  document.getElementById("sampleReceipt").classList.remove("show");
+
+  const paymentArea = document.getElementById("paymentArea");
+
+  if (selectedProduct.free) {
+    paymentArea.style.display = "none";
+    showSampleReceipt();
+  } else {
+    paymentArea.style.display = "block";
+    createUPI();
+    startTimer();
+  }
+}
+
+function closeCheckout() {
+  document.getElementById("checkoutModal").classList.remove("show");
+  if (timerInterval) clearInterval(timerInterval);
+}
+
+function createUPI() {
+  const amount = selectedProduct.price.toFixed(2);
+  const transactionNote = "Aurevia Order " + selectedProduct.id;
+
+  const upiUrl =
+    "upi://pay?pa=" + encodeURIComponent(UPI_ID) +
+    "&pn=" + encodeURIComponent(UPI_NAME) +
+    "&am=" + amount +
+    "&cu=INR" +
+    "&tn=" + encodeURIComponent(transactionNote);
+
+  document.getElementById("upiLink").href = upiUrl;
+
+  const qr = document.getElementById("qrcode");
+  qr.innerHTML = "";
+
+  if (window.QRCode) {
+    new QRCode(qr, {
+      text: upiUrl,
+      width: 150,
+      height: 150,
+      colorDark: "#111111",
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  } else {
+    qr.textContent = "QR unavailable. Please use Pay with UPI.";
+  }
+}
+
+function startTimer() {
+  if (timerInterval) clearInterval(timerInterval);
+
+  secondsRemaining = 300;
+  updateTimer();
+
+  timerInterval = setInterval(() => {
+    secondsRemaining--;
+    updateTimer();
+
+    if (secondsRemaining <= 0) {
+      clearInterval(timerInterval);
+      document.getElementById("paymentStatus").textContent =
+        "Payment session expired. Please close checkout and start again.";
+      document.getElementById("paymentStatus").classList.add("show");
+    }
+  }, 1000);
+}
+
+function updateTimer() {
+  const minutes = Math.floor(secondsRemaining / 60);
+  const seconds = secondsRemaining % 60;
+
+  document.getElementById("countdown").textContent =
+    String(minutes).padStart(2, "0") + ":" +
+    String(seconds).padStart(2, "0");
+}
+
+function requestVerification() {
+  if (secondsRemaining <= 0) {
+    const status = document.getElementById("paymentStatus");
+    status.textContent = "Your payment session has expired. Please start a new order.";
+    status.classList.add("show");
+    return;
+  }
+
+  const status = document.getElementById("paymentStatus");
+  status.textContent =
+    "Your payment verification request has been submitted. Once payment is confirmed by the payment gateway, verification usually takes 1–2 minutes. Your eligible order details will then appear on screen.";
+  status.classList.add("show");
+
+  // This front-end page cannot independently verify UPI payments.
+  // Connect a real payment gateway and server-side verification webhook
+  // before treating a paid order as successful.
+}
+
+function showSampleReceipt() {
+  const sampleName = names[Math.floor(Math.random() * names.length)];
+  const sampleNumber = "XXXX XXXX XXXX " +
+    String(Math.floor(1000 + Math.random() * 9000));
+
+  document.getElementById("sampleName").textContent = sampleName;
+  document.getElementById("sampleNumber").textContent = sampleNumber;
+  document.getElementById("sampleNetwork").textContent =
+    selectedProduct.network.toUpperCase();
+
+  document.getElementById("sampleReceipt").classList.add("show");
+}
+
+renderProducts();
+</script>
 </body>
 </html>
