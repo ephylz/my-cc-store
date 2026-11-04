@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
 <style>
 :root {
   --gold: #d6b66e;
@@ -164,7 +165,7 @@ header {
   color: #f4e5c2;
 }
 
-/* Slim, refined CC balance box */
+/* Slim CC balance box */
 .balance-line {
   width: 100%;
   min-height: 35px;
@@ -188,7 +189,7 @@ header {
   letter-spacing: .2px;
 }
 
-/* Slimmer, centred Buy Now button */
+/* Slim centred Buy Now button */
 .buy-row {
   display: flex;
   justify-content: center;
@@ -197,8 +198,6 @@ header {
 }
 .buy-btn {
   width: 100%;
-  max-width: none;
-  min-width: 0;
   padding: 10px 16px;
   border: 1px solid rgba(255,230,180,.25);
   border-radius: 6px;
@@ -357,19 +356,65 @@ footer {
   text-align: center;
   margin: 12px 0;
 }
-.status {
+
+/* Payment verification popup */
+.verify-overlay {
   display: none;
-  background: #211d15;
-  border: 1px solid #66512e;
-  padding: 13px;
-  border-radius: 8px;
-  color: #e6d4aa;
-  font-size: 12px;
-  line-height: 1.6;
-  margin-top: 13px;
-  text-align: center;
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: rgba(0,0,0,.88);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
-.status.show { display: block; }
+.verify-overlay.show {
+  display: flex;
+}
+.verify-box {
+  width: min(100%,330px);
+  background: linear-gradient(145deg,#1c1a16,#111);
+  border: 1px solid rgba(214,182,110,.45);
+  border-radius: 15px;
+  padding: 30px 22px;
+  text-align: center;
+  box-shadow: 0 15px 55px rgba(0,0,0,.6);
+}
+.spinner {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 20px;
+  border: 3px solid rgba(214,182,110,.18);
+  border-top: 3px solid var(--gold-light);
+  border-right: 3px solid var(--gold);
+  border-radius: 50%;
+  animation: spin .85s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.verify-title {
+  color: var(--gold-light);
+  font-family: 'Playfair Display',serif;
+  font-size: 21px;
+  margin-bottom: 10px;
+}
+.verify-message {
+  color: #aaa;
+  font-size: 12px;
+  line-height: 1.7;
+  margin: 0;
+}
+.verify-dots::after {
+  content: "";
+  animation: dots 1.5s steps(4,end) infinite;
+}
+@keyframes dots {
+  0% { content: ""; }
+  25% { content: "."; }
+  50% { content: ".."; }
+  75%,100% { content: "..."; }
+}
 
 @media(max-width:380px) {
   .product { padding: 13px; }
@@ -388,8 +433,8 @@ footer {
 }
 </style>
 </head>
-<body>
 
+<body>
 <header>
   <div class="brand">AUREVIA</div>
   <div class="brand-sub">CARDS &nbsp;•&nbsp; EXCLUSIVE COLLECTION</div>
@@ -427,13 +472,26 @@ footer {
       <div class="scan-note">Scan using preferred UPI application</div>
       <div class="timer">Complete your payment within <strong id="countdown">05:00</strong></div>
       <a class="upi-btn" id="upiLink" href="#">PAY WITH UPI</a>
-      <button class="confirm-btn" onclick="requestVerification()">I'VE COMPLETED PAYMENT</button>
+      <button class="confirm-btn" onclick="showVerifyingPopup()">I'VE COMPLETED PAYMENT</button>
       <p class="payment-note">
-        Your payment will be verified after confirmation from the payment gateway.
-        Your eligible order details will appear here once verification is complete.
+        Payment confirmation must come from a secure payment gateway.
+        This prototype does not independently verify UPI payments.
       </p>
-      <div class="status" id="paymentStatus"></div>
     </div>
+  </div>
+</div>
+
+<!-- Verification popup -->
+<div class="verify-overlay" id="verifyOverlay" role="dialog" aria-modal="true" aria-labelledby="verifyTitle">
+  <div class="verify-box">
+    <div class="spinner"></div>
+    <div class="verify-title" id="verifyTitle">
+      VERIFYING YOUR PAYMENT<span class="verify-dots"></span>
+    </div>
+    <p class="verify-message">
+      Please wait while payment confirmation is pending.
+      This prototype cannot confirm a payment without a connected payment gateway.
+    </p>
   </div>
 </div>
 
@@ -444,6 +502,7 @@ const UPI_NAME = "Aurevia Cards";
 const products = [];
 let nextBalance = 4500;
 
+// Collection starts at ₹300. No free product is created.
 for (let price = 300; price <= 2500; price += 50) {
   const increase = 1500 + ((price / 50 * 173) % 1001);
   nextBalance += increase;
@@ -528,6 +587,8 @@ function openCheckout(id) {
   if (!selectedProduct) return;
 
   document.getElementById("checkoutModal").classList.add("show");
+  document.getElementById("verifyOverlay").classList.remove("show");
+
   document.getElementById("checkoutName").textContent =
     "Aurevia " + selectedProduct.network.toUpperCase() + " CC";
   document.getElementById("checkoutNetwork").textContent =
@@ -538,9 +599,6 @@ function openCheckout(id) {
     money(selectedProduct.price);
   document.getElementById("orderId").textContent =
     "AUR" + Date.now().toString().slice(-9);
-
-  document.getElementById("paymentStatus").classList.remove("show");
-  document.getElementById("paymentStatus").textContent = "";
 
   createUPI();
   startTimer();
@@ -593,10 +651,6 @@ function startTimer() {
 
     if (secondsRemaining <= 0) {
       clearInterval(timerInterval);
-      const status = document.getElementById("paymentStatus");
-      status.textContent =
-        "Payment session expired. Please close checkout and start again.";
-      status.classList.add("show");
     }
   }, 1000);
 }
@@ -610,19 +664,10 @@ function updateTimer() {
     String(seconds).padStart(2, "0");
 }
 
-function requestVerification() {
-  const status = document.getElementById("paymentStatus");
-
-  if (secondsRemaining <= 0) {
-    status.textContent =
-      "Your payment session has expired. Please start a new order.";
-    status.classList.add("show");
-    return;
-  }
-
-  status.textContent =
-    "Your payment verification request has been submitted. Once payment is confirmed by the payment gateway, verification usually takes 1–2 minutes. Your eligible order details will then appear on screen.";
-  status.classList.add("show");
+function showVerifyingPopup() {
+  // This is a waiting-state preview only.
+  // Real payment verification must be performed by a payment gateway.
+  document.getElementById("verifyOverlay").classList.add("show");
 }
 
 renderProducts();
