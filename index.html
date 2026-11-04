@@ -79,26 +79,21 @@
         </div>
     </div>
 
-    <script>
-        // ==========================================
-        // 1. APNA ASLI UPI ID YAHAN LIKHO:
-        const MY_UPI_ID = "ephylz@ptsbi"; 
-        
-        // 2. APNE QR IMAGE KA EXACT NAAM YAHAN LIKHO:
-        // Agar iPhone ne isko .png me save kiya hai to "my-qr.png" likho
-        const MY_QR_FILENAME = "my-qr.jpg"; 
-        // ==========================================
-
-        document.getElementById('qr-image').src = MY_QR_FILENAME;
-
+        <script>
         function initiateCheckout(displayPrice, upiAmount) {
+            // JUST TYPE YOUR REAL UPI ID HERE (Keep it inside the " " quotes)
+            var upiId = "ephylz@ptsbi"; 
+            
+            // This line automatically generates a real QR code using your UPI ID! No image upload needed.
+            var qrName = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=" + upiId + "&pn=DarkStore&am=" + upiAmount + "&cu=INR";
+
+            document.getElementById('qr-image').src = qrName;
             document.getElementById('checkout-overlay').style.display = 'flex';
             document.getElementById('loading-state').style.display = 'block';
             document.getElementById('qr-state').style.display = 'none';
-
             document.getElementById('display-price').innerText = displayPrice;
             
-            const upiLink = `upi://pay?pa=${MY_UPI_ID}&pn=DarkStore&am=${upiAmount}&cu=INR`;
+            var upiLink = "upi://pay?pa=" + upiId + "&pn=DarkStore&am=" + upiAmount + "&cu=INR";
             document.getElementById('dynamic-upi').href = upiLink;
 
             setTimeout(() => {
@@ -111,5 +106,6 @@
             document.getElementById('checkout-overlay').style.display = 'none';
         }
     </script>
+
 </body>
 </html>
