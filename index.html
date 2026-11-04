@@ -135,8 +135,6 @@ header {
   margin-top: 18px;
   border: 1px solid rgba(255,255,255,.3);
 }
-
-/* Slightly larger masked card number */
 .card-number {
   font-size: clamp(15px,4.2vw,20px);
   letter-spacing: 2.4px;
@@ -151,8 +149,6 @@ header {
   position: relative;
   z-index: 1;
 }
-
-/* Slightly larger cardholder name */
 .card-holder-name {
   font-size: clamp(10px,2.7vw,12px);
   font-weight: 600;
@@ -171,8 +167,6 @@ header {
   font-style: italic;
   color: #f4e5c2;
 }
-
-/* Slim CC balance box */
 .balance-line {
   width: 100%;
   min-height: 35px;
@@ -195,8 +189,6 @@ header {
   font-weight: 700;
   letter-spacing: .2px;
 }
-
-/* Slim centred Buy Now button */
 .buy-row {
   display: flex;
   justify-content: center;
@@ -230,8 +222,6 @@ footer {
   border-top: 1px solid #222;
   line-height: 1.7;
 }
-
-/* Checkout */
 .modal {
   display: none;
   position: fixed;
@@ -363,8 +353,6 @@ footer {
   text-align: center;
   margin: 12px 0;
 }
-
-/* Payment verification popup */
 .verify-overlay {
   display: none;
   position: fixed;
@@ -422,7 +410,6 @@ footer {
   50% { content: ".."; }
   75%,100% { content: "..."; }
 }
-
 @media(max-width:380px) {
   .product { padding: 13px; }
   .credit-card { padding: 15px; }
@@ -495,7 +482,6 @@ footer {
   </div>
 </div>
 
-<!-- Verification popup -->
 <div class="verify-overlay" id="verifyOverlay" role="dialog" aria-modal="true" aria-labelledby="verifyTitle">
   <div class="verify-box">
     <div class="spinner"></div>
@@ -578,9 +564,9 @@ for (let price = 300; price <= 2500; price += 50) {
 
 const money = amount => "₹" + Number(amount).toLocaleString("en-IN");
 
+/* Shows 12 fictional placeholder digits and masks only the final 4. */
 function maskedNumber(index) {
-  const prefixes = ["4532 18", "5214 63", "4556 72", "5412 39", "4761 84"];
-  return prefixes[index % prefixes.length] + "•••• ••••";
+  return "0000 0000 0000 ••••";
 }
 
 function renderProducts(filter = "all") {
