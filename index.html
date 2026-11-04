@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verified CC Vendor | Instant Delivery</title>
+    <style>
+        :root {
+            --primary: #00ff88;
+            --bg-dark: #0a0a0c;
+            --card-bg: #141418;
+            --text-main: #ffffff;
+            --text-muted: #888891;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            width: 100%;
+            background: #000000;
+            padding: 15px 0;
+            text-align: center;
+            border-bottom: 1px solid #222;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: var(--text-main);
+        }
+        .logo span {
+            color: var(--primary);
+        }
+        .trust-banner {
+            background: #112215;
+            color: var(--primary);
+            width: 100%;
+            text-align: center;
+            padding: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .container {
+            max-width: 500px;
+            width: 90%;
+            margin: 40px auto;
+        }
+        .product-card {
+            background: var(--card-bg);
+            border: 1px solid #2a2a35;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .badge {
+            position: absolute;
+            top: 15px;
+            right: -30px;
+            background: var(--primary);
+            color: #000;
+            padding: 5px 40px;
+            font-size: 12px;
+            font-weight: bold;
+            transform: rotate(45deg);
+        }
+        .balance {
+            font-size: 32px;
+            font-weight: 800;
+            margin: 10px 0;
+        }
+        .cc-details {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        .cc-details div {
+            background: #1e1e24;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .price-section {
+            margin: 30px 0;
+        }
+        .price {
+            font-size: 36px;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        .strike {
+            text-decoration: line-through;
+            color: var(--text-muted);
+            font-size: 18px;
+            margin-right: 10px;
+        }
+        button {
+            background: var(--primary);
+            color: #000;
+            border: none;
+            padding: 16px;
+            width: 100%;
+            font-size: 18px;
+            font-weight: 900;
+            border-radius: 8px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+        }
+        /* Payment Section / Modal */
+        #checkout-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+        }
+        .payment-box {
+            background: var(--card-bg);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .timer {
+            color: #ff4444;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        .qr-container {
+            background: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 20px auto;
+            width: fit-content;
+        }
+        .qr-code {
+            width: 220px;
+            height: 220px;
+            display: block;
+        }
+        .upi-btn {
+            display: block;
+            background: #ffffff;
+            color: #000000;
+            text-decoration: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 15px;
+            border: 1px solid #ccc;
+        }
+        .loader {
+            display: none;
+            border: 4px solid #333;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .live-feed {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(20, 20, 24, 0.9);
+            border: 1px solid #333;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.5s ease-out;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--primary);
+        }
+        @keyframes slideIn { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div class="trust-banner">
+        🔒 ESCROW SECURED | 100% WORKING BINS | INSTANT AUTO-DELIVERY
+    </div>
+
+    <header>
+        <div class="logo">DARK<span>STORE</span></div>
+    </header>
+
+    <div class="container">
+        <div class="product-card">
+            <div class="badge">BEST SELLER</div>
+            <h2 style="margin-top:0; color:var(--text-muted);">High Balance CC</h2>
+            <div class="balance">$1,000.00+ USD</div>
+            
+            <div class="cc-details">
+                <div>Visa / MC</div>
+                <div>CVV Included</div>
+                <div>Valid 2026+</div>
+            </div>
+
+            <p style="color: #666; font-size: 13px; line-height: 1.5;">
+                Includes Fullz (Name, Address, Zip, CVV). Freshly cracked, untested on major gateways. 98% validity rate.
+            </p>
+
+            <div class="price-section">
+                <span class="strike">₹500</span>
+                <span class="price">₹100</span>
+            </div>
+
+            <button onclick="initiateCheckout()">Buy Now</button>
+        </div>
+    </div>
+
+    <!-- Fake Live Purchase Feed -->
+    <div class="live-feed" id="liveFeed">
+        <div class="dot"></div>
+        <span id="feedText">User772 just bought a $1000 Balance CC</span>
+    </div>
+
+    <!-- Secure Checkout Overlay -->
+    <div id="checkout-overlay">
+        <div class="payment-box">
+            <div id="loading-state">
+                <h3 style="color: var(--primary);">Securing Connection...</h3>
+                <p style="color: var(--text-muted); font-size: 14px;">Generating unique payment gateway for your IP.</p>
+                <div class="loader" id="loader" style="display: block;"></div>
+            </div>
+
+            <div id="qr-state" style="display: none;">
+                <h3>Awaiting Payment</h3>
+                <p style="font-size: 14px; color: var(--text-muted);">Order reserved for the next:</p>
+                <div class="timer" id="countdown">10:00</div>
+                
+                <div class="qr-container">
+                    <!-- YOUR QR CODE IMAGE GOES HERE -->
+                    <!-- Upload your QR code to the same folder as this file and rename it to 'my-qr.jpg' -->
+                    <img src="my-qr.jpg" alt="Scan to Pay" class="qr-code" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=UPI_ID_NOT_CONFIGURED'">
+                </div>
+
+                <p style="margin: 10px 0; font-size: 14px;">Total to pay: <b>₹100</b></p>
+
+                <!-- YOUR UPI ID GOES HERE -->
+                <!-- Change 'your_upi_id@ybl' to your actual UPI ID (like Fampay, Paytm, or PhonePe ID) -->
+                <a href="upi://pay?pa=your_upi_id@ybl&pn=DarkStore&am=100.00&cu=INR" class="upi-btn">
+                    Pay via UPI App on Phone
+                </a>
+                
+                <p style="font-size: 12px; color: #666; margin-top: 20px;">
+                    Card details will be displayed automatically on this screen once payment is confirmed on the blockchain.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulate a checkout loading process to look professional
+        function initiateCheckout() {
+            document.getElementById('checkout-overlay').style.display = 'flex';
+            
+            setTimeout(() => {
+                document.getElementById('loading-state').style.display = 'none';
+                document.getElementById('qr-state').style.display = 'block';
+                startTimer(600); // 10 minutes
+            }, 2500); // 2.5 second fake loading delay
+        }
+
+        // Countdown Timer Logic
+        function startTimer(duration) {
+            let timer = duration, minutes, seconds;
+            let display = document.getElementById('countdown');
+            setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    timer = 0;
+                    display.textContent = "EXPIRED";
+                }
+            }, 1000);
+        }
+
+        // Fake Live Purchase Ticker
+        const fakeUsers = ['Rahul_99', 'DarkWebUser', 'Viper22', 'Ghost_CC', 'Anonym991'];
+        setInterval(() => {
+            const user = fakeUsers[Math.floor(Math.random() * fakeUsers.length)];
+            document.getElementById('feedText').innerText = `${user} just bought a $1000 Balance CC`;
+        }, 8000); // Changes name every 8 seconds
+    </script>
+</body>
+</html>
