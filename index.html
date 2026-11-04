@@ -1,287 +1,573 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DARK VAULT | Premium Cards</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&family=Inter:wght@400;600&display=swap');
-        
-        :root {
-            --bg-color: #030712;
-            --card-container: #0b1120;
-            --accent: #00f0ff;
-            --text-main: #f3f4f6;
-            --text-muted: #6b7280;
-        }
-        
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 0; }
-        
-        /* HEADER */
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #000000; border-bottom: 1px solid #1f2937; }
-        .header h1 { margin: 0; font-family: 'Orbitron', sans-serif; font-size: 22px; color: var(--text-main); font-weight: 900;}
-        .header h1 span { color: var(--accent); }
-        .status { color: #10b981; font-size: 12px; font-weight: bold; display: flex; align-items: center; gap: 5px;}
-        .dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aurevia Cards | Premium Digital Store</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 
-        .container { padding: 20px 15px; }
-
-        .cc-item { background: var(--card-container); border: 1px solid #1f2937; border-radius: 16px; padding: 15px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-
-        /* REALISTIC PHYSICAL CARD DESIGN */
-        .physical-card {
-            width: 100%;
-            height: 180px;
-            border-radius: 14px;
-            padding: 20px;
-            box-sizing: border-box;
-            position: relative;
-            margin-bottom: 20px;
-            color: #fff;
-            box-shadow: inset 0 0 20px rgba(255,255,255,0.1), 0 5px 15px rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        
-        /* Background Variations */
-        .bg-blue { background: linear-gradient(135deg, #0f172a, #1e3a8a, #000000); }
-        .bg-gold { background: linear-gradient(135deg, #422006, #b45309, #fcd34d); color: #000; }
-        .bg-dark { background: linear-gradient(135deg, #000000, #111827, #374151); }
-        .bg-green { background: linear-gradient(135deg, #064e3b, #047857, #000); }
-
-        .card-top { display: flex; justify-content: space-between; align-items: flex-start; }
-        .chip { width: 45px; height: 32px; background: linear-gradient(135deg, #fbbf24, #d97706); border-radius: 6px; box-shadow: inset 0 0 5px rgba(0,0,0,0.5); background-image: repeating-linear-gradient(90deg, transparent, transparent 10px, rgba(0,0,0,0.2) 10px, rgba(0,0,0,0.2) 11px); }
-        .contactless { font-size: 20px; transform: rotate(90deg); margin-left: 10px; font-weight: bold; opacity: 0.7;}
-        .brand { font-size: 18px; font-weight: 900; font-style: italic; font-family: 'Orbitron', sans-serif;}
-
-        .card-mid { margin-top: 25px; }
-        .cc-number { font-family: 'Share Tech Mono', monospace; font-size: 20px; letter-spacing: 3px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
-        
-        .card-bottom { display: flex; justify-content: space-between; text-transform: uppercase; font-size: 13px; font-family: 'Share Tech Mono', monospace; opacity: 0.9;}
-
-        .info-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; padding: 0 5px;}
-        .info-row span { font-weight: bold; color: var(--accent); }
-
-        .buy-btn { background: var(--accent); color: #000; border: none; padding: 15px; width: 100%; font-size: 16px; font-weight: 900; border-radius: 8px; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
-        .buy-btn:active { transform: scale(0.98); }
-
-        /* CHECKOUT MODAL */
-        #checkout-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3,7,18,0.95); z-index: 100; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; overflow-y: auto;}
-        .checkout-box { background: var(--card-container); border: 1px solid #1f2937; width: 100%; max-width: 400px; border-radius: 16px; padding: 25px; text-align: center; }
-        
-        .c-title { color: var(--text-muted); font-size: 12px; font-weight: bold; margin-bottom: 5px; letter-spacing: 1px;}
-        .c-amount { font-family: 'Orbitron', sans-serif; font-size: 40px; color: var(--accent); font-weight: 900; margin-bottom: 20px;}
-        
-        .qr-area { background: #fff; padding: 15px; border-radius: 12px; display: inline-block; margin: 20px 0; }
-        .qr-area img { width: 200px; height: 200px; }
-
-        .upi-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;}
-        .upi-btn { background: #1f2937; color: #fff; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 14px;}
-        
-        .verify-btn { background: #10b981; color: #000; width: 100%; padding: 15px; border: none; border-radius: 8px; font-weight: 900; font-size: 16px; margin-top: 10px; cursor: pointer;}
-        
-        .loader { display: none; margin: 20px auto; width: 40px; height: 40px; border: 4px solid #1f2937; border-top: 4px solid var(--accent); border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* SUCCESS SCREEN & GENERATED DETAILS */
-        #success-screen { display: none; text-align: left; }
-        .success-check { width: 60px; height: 60px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 15px auto; color: #000;}
-        .details-box { background: #000; border: 1px dashed var(--accent); padding: 20px; border-radius: 8px; font-family: 'Share Tech Mono', monospace; font-size: 14px; line-height: 1.8; color: #10b981; margin-top: 20px;}
-        .d-row { display: flex; justify-content: space-between; border-bottom: 1px solid #1f2937; padding: 8px 0;}
-        .d-row span:last-child { color: #fff; font-weight: bold;}
-    </style>
+<style>
+:root {
+  --gold:#d6b477;
+  --dark:#10100f;
+  --panel:#191917;
+  --muted:#99958b;
+  --white:#f7f3e9;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+ background:var(--dark);
+ color:var(--white);
+ font-family:'DM Sans',sans-serif;
+}
+header{
+ height:76px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ padding:0 7%;
+ border-bottom:1px solid #343027;
+ position:sticky;
+ top:0;
+ background:rgba(16,16,15,.96);
+ z-index:10;
+}
+.logo{
+ font-family:'Playfair Display',serif;
+ font-size:27px;
+ letter-spacing:2px;
+ color:var(--gold);
+}
+.logo span{color:white}
+.header-right{font-size:12px;color:var(--muted)}
+.hero{
+ padding:75px 20px 55px;
+ text-align:center;
+ background:radial-gradient(ellipse at center top,#49391d 0%,#171510 45%,#10100f 75%);
+}
+.eyebrow{
+ color:var(--gold);
+ letter-spacing:4px;
+ font-size:11px;
+ font-weight:700;
+}
+.hero h1{
+ font-family:'Playfair Display',serif;
+ font-size:clamp(38px,6vw,65px);
+ margin:20px 0 15px;
+ font-weight:500;
+}
+.hero h1 span{color:var(--gold)}
+.hero p{
+ color:#aaa69c;
+ max-width:570px;
+ margin:auto;
+ line-height:1.8;
+ font-size:14px;
+}
+.trust{
+ display:flex;
+ justify-content:center;
+ gap:30px;
+ flex-wrap:wrap;
+ margin-top:32px;
+ color:#c7bda9;
+ font-size:11px;
+}
+.trust span{display:flex;gap:7px;align-items:center}
+.section{
+ max-width:1250px;
+ margin:auto;
+ padding:45px 22px 80px;
+}
+.section-head{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ flex-wrap:wrap;
+ gap:15px;
+ margin-bottom:27px;
+}
+.section-head h2{
+ font-family:'Playfair Display',serif;
+ font-size:30px;
+ font-weight:500;
+}
+.section-head p{color:var(--muted);font-size:12px;margin-top:6px}
+.filters{
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+}
+.filter{
+ border:1px solid #494337;
+ background:transparent;
+ color:#c7bda9;
+ padding:10px 16px;
+ border-radius:25px;
+ cursor:pointer;
+ font-size:11px;
+}
+.filter.active,.filter:hover{
+ background:var(--gold);
+ color:#17130c;
+ border-color:var(--gold);
+}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fill,minmax(245px,1fr));
+ gap:22px;
+}
+.product{
+ background:var(--panel);
+ border:1px solid #343027;
+ border-radius:13px;
+ overflow:hidden;
+ transition:.3s;
+}
+.product:hover{
+ transform:translateY(-5px);
+ border-color:#aa8951;
+ box-shadow:0 12px 30px #0006;
+}
+.card-art{
+ height:155px;
+ margin:15px;
+ padding:19px;
+ border-radius:10px;
+ position:relative;
+ overflow:hidden;
+ display:flex;
+ flex-direction:column;
+ justify-content:space-between;
+ background:linear-gradient(125deg,#35332e,#11110f 65%,#65502e);
+ border:1px solid #a58b5c66;
+}
+.card-art::before{
+ content:"";
+ position:absolute;
+ width:200px;height:200px;
+ border:1px solid #ffffff20;
+ border-radius:50%;
+ right:-70px;top:-95px;
+ box-shadow:0 0 0 20px #ffffff08,0 0 0 40px #ffffff05;
+}
+.card-top,.card-bottom{position:relative;z-index:1}
+.card-top{
+ display:flex;
+ justify-content:space-between;
+ font-size:10px;
+ letter-spacing:2px;
+ color:#e5d5b4;
+}
+.chip{
+ width:30px;height:23px;
+ border-radius:5px;
+ border:1px solid #d6b477;
+ background:linear-gradient(135deg,#e3cf9f,#78613b);
+ margin-top:12px;
+}
+.fake-number{
+ font-size:13px;
+ letter-spacing:3px;
+ margin-top:10px;
+}
+.card-bottom{
+ display:flex;
+ justify-content:space-between;
+ align-items:end;
+ font-size:10px;
+ color:#e7d7b6;
+}
+.network{font-size:19px;font-weight:800;font-style:italic}
+.product-info{padding:0 17px 18px}
+.product-info h3{font-size:15px;font-weight:600}
+.product-info .sub{color:var(--muted);font-size:11px;margin-top:5px}
+.details{
+ display:flex;
+ justify-content:space-between;
+ border-top:1px solid #343027;
+ margin-top:15px;
+ padding-top:13px;
+ font-size:11px;
+ color:#aaa69c;
+}
+.details strong{color:var(--gold);font-size:17px}
+.buy{
+ width:100%;
+ margin-top:16px;
+ padding:13px;
+ border:0;
+ border-radius:6px;
+ background:linear-gradient(110deg,#b38a4d,#e6cb92);
+ color:#17130c;
+ font-weight:800;
+ cursor:pointer;
+ font-size:12px;
+ transition:.2s;
+}
+.buy:hover{filter:brightness(1.12)}
+.notice{
+ margin-top:30px;
+ border:1px solid #453a27;
+ background:#1d1a13;
+ padding:17px;
+ border-radius:8px;
+ color:#b9ad96;
+ font-size:11px;
+ line-height:1.8;
+}
+footer{
+ padding:35px 20px;
+ text-align:center;
+ border-top:1px solid #343027;
+ color:#77736a;
+ font-size:11px;
+ line-height:2;
+}
+footer strong{color:var(--gold)}
+/* Checkout */
+.overlay{
+ display:none;
+ position:fixed;
+ inset:0;
+ z-index:30;
+ background:#000c;
+ overflow-y:auto;
+ padding:25px 12px;
+ align-items:center;
+ justify-content:center;
+}
+.modal{
+ width:100%;
+ max-width:460px;
+ background:#191917;
+ border:1px solid #77603a;
+ border-radius:14px;
+ padding:25px;
+ position:relative;
+ margin:auto;
+}
+.close{
+ position:absolute;
+ right:18px;top:15px;
+ background:none;
+ border:0;
+ color:white;
+ font-size:25px;
+ cursor:pointer;
+}
+.modal h2{
+ font-family:'Playfair Display',serif;
+ font-weight:500;
+ font-size:27px;
+ margin-bottom:7px;
+}
+.muted{color:var(--muted);font-size:12px;line-height:1.7}
+.summary{
+ margin:20px 0;
+ padding:17px;
+ background:#24231f;
+ border-radius:9px;
+ border:1px solid #39352b;
+}
+.summary-row{
+ display:flex;
+ justify-content:space-between;
+ gap:10px;
+ margin:9px 0;
+ font-size:12px;
+ color:#aaa69c;
+}
+.summary-row strong{color:white}
+.total{
+ border-top:1px solid #494337;
+ padding-top:13px;
+ margin-top:13px;
+ font-size:15px;
+}
+.total strong{color:var(--gold);font-size:21px}
+.qr-area{
+ text-align:center;
+ padding:20px 10px;
+ background:#f8f6f0;
+ border-radius:9px;
+ margin:15px 0;
+ color:#171717;
+}
+#qrcode{
+ display:flex;
+ justify-content:center;
+ margin:12px auto;
+}
+#qrcode img,#qrcode canvas{
+ margin:auto;
+}
+.qr-area p{font-size:11px;line-height:1.7}
+.pay-btn{
+ display:block;
+ width:100%;
+ padding:14px;
+ background:var(--gold);
+ color:#17130c;
+ border:0;
+ border-radius:6px;
+ font-weight:800;
+ cursor:pointer;
+ text-align:center;
+ text-decoration:none;
+ font-size:12px;
+ margin-top:12px;
+}
+.secondary{
+ display:block;
+ width:100%;
+ padding:13px;
+ background:transparent;
+ color:var(--gold);
+ border:1px solid #78603a;
+ border-radius:6px;
+ cursor:pointer;
+ margin-top:10px;
+ font-size:12px;
+}
+.status{
+ padding:12px;
+ background:#28251c;
+ border-radius:6px;
+ color:#e2c58c;
+ font-size:11px;
+ margin-top:14px;
+ line-height:1.6;
+}
+@media(max-width:600px){
+ header{padding:0 18px;height:65px}
+ .logo{font-size:22px}
+ .hero{padding:60px 18px 45px}
+ .section{padding:35px 15px 55px}
+ .section-head h2{font-size:25px}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+ .card-art{height:115px;margin:8px;padding:10px}
+ .chip{width:24px;height:18px;margin-top:7px}
+ .fake-number{font-size:10px;letter-spacing:1px}
+ .card-top{font-size:8px}
+ .card-bottom{font-size:8px}
+ .network{font-size:15px}
+ .product-info{padding:0 10px 12px}
+ .product-info h3{font-size:12px}
+ .product-info .sub{font-size:10px}
+ .details{font-size:10px}
+ .details strong{font-size:14px}
+ .buy{font-size:10px;padding:12px 5px}
+}
+</style>
 </head>
+
 <body>
 
-    <div class="header">
-        <h1>DARK<span>VAULT</span></h1>
-        <div class="status"><div class="dot"></div> ONLINE</div>
+<header>
+ <div class="logo">AUREVIA <span>CARDS</span></div>
+ <div class="header-right">✦ PREMIUM DIGITAL STORE</div>
+</header>
+
+<section class="hero">
+ <div class="eyebrow">THE ART OF PREMIUM</div>
+ <h1>Discover a More <span>Exclusive</span><br>Experience.</h1>
+ <p>Explore our curated collection of premium digital gift cards, designed for a seamless and elegant shopping experience.</p>
+ <div class="trust">
+  <span>✦ Premium Collection</span>
+  <span>◈ Secure Checkout</span>
+  <span>✓ Order Confirmation</span>
+ </div>
+</section>
+
+<main class="section">
+ <div class="section-head">
+  <div>
+   <h2>Explore Collection</h2>
+   <p>Choose your preferred digital card denomination.</p>
+  </div>
+  <div class="filters">
+   <button class="filter active" onclick="filterCards('all',this)">All Cards</button>
+   <button class="filter" onclick="filterCards('visa',this)">Visa</button>
+   <button class="filter" onclick="filterCards('mastercard',this)">Mastercard</button>
+  </div>
+ </div>
+
+ <div class="grid" id="products"></div>
+
+ <div class="notice">
+  <strong>Important:</strong> These are illustrative digital gift-card product designs. Actual card issuer, redemption terms, availability and face value must be confirmed before purchase. No bank-issued card credentials are displayed or generated by this demo.
+ </div>
+</main>
+
+<footer>
+ <strong>AUREVIA CARDS</strong><br>
+ Premium Digital Shopping Experience<br>
+ © 2026 Aurevia. All rights reserved.<br>
+ This demonstration is not affiliated with Visa or Mastercard.
+</footer>
+
+<div class="overlay" id="checkout">
+ <div class="modal">
+  <button class="close" onclick="closeCheckout()">×</button>
+  <h2>Secure Checkout</h2>
+  <p class="muted">Review your selected product and continue to UPI payment.</p>
+
+  <div class="summary">
+   <div class="summary-row">
+    <span>Product</span><strong id="orderName"></strong>
+   </div>
+   <div class="summary-row">
+    <span>Network</span><strong id="orderNetwork"></strong>
+   </div>
+   <div class="summary-row">
+    <span>Order ID</span><strong id="orderId"></strong>
+   </div>
+   <div class="summary-row total">
+    <span>Amount Payable</span><strong id="orderPrice"></strong>
+   </div>
+  </div>
+
+  <div class="qr-area">
+   <strong>SCAN & PAY WITH UPI</strong>
+   <div id="qrcode"></div>
+   <p>Scan using your preferred UPI application.<br>
+   Verify the merchant and amount before paying.</p>
+  </div>
+
+  <a class="pay-btn" id="upiLink" href="#">PAY WITH UPI</a>
+
+  <div class="status" id="paymentStatus">
+   Payment status: Awaiting payment. Your order will be confirmed only after verified payment.
+  </div>
+
+  <button class="secondary" onclick="closeCheckout()">CLOSE CHECKOUT</button>
+ </div>
+</div>
+
+<script>
+const UPI_ID = "ephylz@ptsbi";
+const MERCHANT = "Aurevia Cards";
+
+let selected = null;
+
+const products = document.getElementById("products");
+
+// Generate denominations from Rs. 300 to Rs. 2500
+const denominations = [];
+
+for(let amount=300; amount<=2500; amount+=50){
+ denominations.push(amount);
+}
+
+function createProducts(){
+ products.innerHTML = "";
+
+ denominations.forEach((price,index)=>{
+  const network = index%2===0 ? "visa" : "mastercard";
+  const networkName = network==="visa" ? "VISA" : "Mastercard";
+
+  const product = document.createElement("article");
+  product.className = "product";
+  product.dataset.network = network;
+
+  product.innerHTML = `
+   <div class="card-art">
+    <div class="card-top">
+     <span>AUREVIA PRIVATE</span>
+     <span>PREMIUM</span>
     </div>
-
-    <div class="container" id="store-front">
-        <!-- The Free testing card and premium cards will be injected here -->
+    <div>
+     <div class="chip"></div>
+     <div class="fake-number">•••• •••• •••• ${String(4100+index*17).slice(-4)}</div>
     </div>
-
-    <!-- CHECKOUT & VERIFICATION OVERLAY -->
-    <div id="checkout-overlay">
-        <div class="checkout-box">
-            
-            <button onclick="closeCheckout()" style="float:left; background:none; border:none; color:var(--text-muted); font-size:20px;">✖</button>
-            <div style="clear:both;"></div>
-
-            <div id="payment-view">
-                <div class="c-title">ORDER AMOUNT</div>
-                <div class="c-amount" id="chk-amount">₹300</div>
-                <div style="background:#1f2937; padding:8px; border-radius:8px; font-size:14px; margin-bottom:15px;" id="chk-item"></div>
-
-                <div class="qr-area">
-                    <img id="chk-qr" src="" alt="Scan QR">
-                </div>
-
-                <div class="c-title">OR OPEN APP DIRECTLY</div>
-                <div class="upi-buttons">
-                    <a href="#" class="upi-btn" id="upi-gpay">GPay</a>
-                    <a href="#" class="upi-btn" id="upi-paytm">Paytm</a>
-                </div>
-
-                <button class="verify-btn" onclick="startVerification()">I HAVE PAID</button>
-            </div>
-
-            <!-- Fake Loading State -->
-            <div id="loading-view" style="display:none; padding:40px 0;">
-                <div class="loader" style="display:block;"></div>
-                <h3 style="color:var(--accent);">Verifying Blockchain Transaction...</h3>
-                <p style="color:var(--text-muted); font-size:14px;">Please wait while we confirm payment.</p>
-            </div>
-
-            <!-- Final Delivery Details -->
-            <div id="success-screen">
-                <div class="success-check">✓</div>
-                <h2 style="text-align:center; color:#10b981; margin:0;">Transaction Complete</h2>
-                <p style="text-align:center; color:var(--text-muted); font-size:14px; margin-bottom:20px;">Card details successfully cracked and delivered.</p>
-
-                <div class="details-box" id="generated-details">
-                    <!-- Data injected by JS -->
-                </div>
-
-                <button class="buy-btn" style="margin-top:20px;" onclick="closeCheckout()">BACK TO STORE</button>
-            </div>
-        </div>
+    <div class="card-bottom">
+     <span>DEMO CARD DESIGN<br>VALIDITY SUBJECT TO ISSUER</span>
+     <span class="network">${networkName}</span>
     </div>
+   </div>
+   <div class="product-info">
+    <h3>${networkName} Digital Gift Card</h3>
+    <div class="sub">Illustrative digital product · ${index+1}</div>
+    <div class="details">
+     <span>Purchase Price</span>
+     <strong>₹${price.toLocaleString("en-IN")}</strong>
+    </div>
+    <button class="buy" onclick="openCheckout(${price},'${networkName}')">
+     BUY NOW · ₹${price.toLocaleString("en-IN")}
+    </button>
+   </div>
+  `;
 
-    <script>
-        // ==========================================
-        // ENTER YOUR UPI ID HERE:
-        const MY_UPI_ID = "ephylz@ptsbi"; 
-        // ==========================================
+  products.appendChild(product);
+ });
+}
 
-        const westernNames = ["Alexander Wright", "Jason Miller", "Victoria Vance", "Christopher Nolan", "Elena Rodriguez", "David Chen", "Sarah Jenkins", "Michael O'Connor"];
-        const brands = ["VISA", "MasterCard"];
-        const bgs = ["bg-blue", "bg-gold", "bg-dark", "bg-green"];
-        
-        let storeHTML = "";
+function filterCards(type,button){
+ document.querySelectorAll(".filter").forEach(el=>el.classList.remove("active"));
+ button.classList.add("active");
 
-        // 1. ADD A FREE TESTING CARD
-        storeHTML += createCardHTML(0, "FREE TESTING CARD", 50, "Jason Miller", "VISA", "bg-dark");
+ document.querySelectorAll(".product").forEach(card=>{
+  card.style.display = type==="all" || card.dataset.network===type ? "" : "none";
+ });
+}
 
-        // 2. GENERATE CARDS (₹300 to ₹1000)
-        let currentBalance = 250; // Starting Balance logic
-        for(let price = 300; price <= 1000; price += 50) {
-            let rName = westernNames[Math.floor(Math.random() * westernNames.length)];
-            let rBrand = brands[Math.floor(Math.random() * brands.length)];
-            let rBg = bgs[Math.floor(Math.random() * bgs.length)];
-            
-            storeHTML += createCardHTML(price, `Premium CC`, currentBalance, rName, rBrand, rBg);
-            currentBalance += 85; // Balance scales correctly as price goes up
-        }
+function openCheckout(price,network){
+ selected = {price,network};
 
-        document.getElementById('store-front').innerHTML = storeHTML;
+ const orderId = "AUR" + Date.now().toString().slice(-10);
 
-        // Function to build the card UI
-        function createCardHTML(price, label, bal, name, brand, bgClass) {
-            let p1 = Math.floor(1000 + Math.random() * 9000);
-            let p2 = Math.floor(1000 + Math.random() * 9000);
-            let p3 = Math.floor(1000 + Math.random() * 9000);
-            let exp = `12/${Math.floor(26 + Math.random() * 4)}`; // Valid 2026-2029
+ document.getElementById("orderName").textContent =
+  network + " Digital Gift Card";
 
-            return `
-            <div class="cc-item">
-                <div class="physical-card ${bgClass}">
-                    <div class="card-top">
-                        <div style="display:flex;"><div class="chip"></div><div class="contactless">)))</div></div>
-                        <div class="brand">${brand}</div>
-                    </div>
-                    <div class="card-mid">
-                        <!-- ONLY LAST 4 DIGITS HIDDEN -->
-                        <div class="cc-number">${p1} ${p2} ${p3} ****</div>
-                    </div>
-                    <div class="card-bottom">
-                        <div>${name}</div>
-                        <div>VALID THRU<br>${exp}</div>
-                    </div>
-                </div>
-                
-                <div class="info-row">
-                    <div>Guaranteed Balance: <span>$${bal}.00</span></div>
-                </div>
-                <div class="info-row">
-                    <div>Network: <span>${brand} International</span></div>
-                </div>
+ document.getElementById("orderNetwork").textContent = network;
+ document.getElementById("orderId").textContent = orderId;
+ document.getElementById("orderPrice").textContent =
+  "₹" + price.toLocaleString("en-IN");
 
-                <button class="buy-btn" onclick="openCheckout(${price}, '${name}', '${brand}', '${exp}')">
-                    ${price === 0 ? 'CLAIM FREE TEST CARD' : `Buy ₹${price} Card`}
-                </button>
-            </div>`;
-        }
+ const note = encodeURIComponent("Order " + orderId);
+ const merchant = encodeURIComponent(MERCHANT);
 
-        // Checkout Logic
-        let currentTargetData = {};
+ const upiUrl =
+  `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${merchant}&am=${price}&cu=INR&tn=${note}`;
 
-        function openCheckout(price, name, brand, exp) {
-            currentTargetData = { price, name, brand, exp };
-            
-            document.getElementById('checkout-overlay').style.display = 'flex';
-            document.getElementById('payment-view').style.display = 'block';
-            document.getElementById('loading-view').style.display = 'none';
-            document.getElementById('success-screen').style.display = 'none';
+ document.getElementById("qrcode").innerHTML = "";
 
-            document.getElementById('chk-amount').innerText = `₹${price}`;
-            document.getElementById('chk-item').innerText = `${brand} Premium Card - ${name}`;
+ if(typeof QRCode !== "undefined"){
+  new QRCode(document.getElementById("qrcode"),{
+   text:upiUrl,
+   width:180,
+   height:180,
+   colorDark:"#111111",
+   colorLight:"#ffffff",
+   correctLevel:QRCode.CorrectLevel.H
+  });
+ }
 
-            let upiString = `upi://pay?pa=${MY_UPI_ID}&pn=DarkVault&am=${price}.00&cu=INR`;
-            let encodedUpi = encodeURIComponent(upiString);
-            
-            document.getElementById('chk-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodedUpi}`;
-            document.getElementById('upi-gpay').href = upiString;
-            document.getElementById('upi-paytm').href = upiString;
-        }
+ document.getElementById("upiLink").href = upiUrl;
 
-        function startVerification() {
-            document.getElementById('payment-view').style.display = 'none';
-            document.getElementById('loading-view').style.display = 'block';
+ document.getElementById("paymentStatus").textContent =
+  "Payment status: Awaiting payment. Order " + orderId +
+  " will be confirmed only after payment gateway verification.";
 
-            // Fake 3 second loading screen
-            setTimeout(() => {
-                generateFinalDetails();
-            }, 3000);
-        }
+ document.getElementById("checkout").style.display = "flex";
+ document.body.style.overflow = "hidden";
+}
 
-        function generateFinalDetails() {
-            document.getElementById('loading-view').style.display = 'none';
-            document.getElementById('success-screen').style.display = 'block';
+function closeCheckout(){
+ document.getElementById("checkout").style.display = "none";
+ document.body.style.overflow = "auto";
+}
 
-            const banks = ["Chase Bank", "Bank of America", "Barclays", "HSBC", "Wells Fargo", "Citibank"];
-            const countries = ["United States", "United Kingdom", "Canada", "Australia"];
-            const types = ["Credit - Signature", "Credit - Platinum", "Debit - Business"];
+document.getElementById("checkout").addEventListener("click",function(e){
+ if(e.target===this) closeCheckout();
+});
 
-            let rBank = banks[Math.floor(Math.random() * banks.length)];
-            let rCountry = countries[Math.floor(Math.random() * countries.length)];
-            let rType = types[Math.floor(Math.random() * types.length)];
-            
-            // Generate full 16 digits
-            let fullNum = `4${Math.floor(100+Math.random()*899)} ${Math.floor(1000+Math.random()*9000)} ${Math.floor(1000+Math.random()*9000)} ${Math.floor(1000+Math.random()*9000)}`;
-            let cvv = Math.floor(100 + Math.random() * 899);
-            let pin = Math.floor(1000 + Math.random() * 9000);
+createProducts();
+</script>
 
-            document.getElementById('generated-details').innerHTML = `
-                <div class="d-row"><span>Cardholder Name:</span> <span>${currentTargetData.name}</span></div>
-                <div class="d-row"><span>Card Number:</span> <span>${fullNum}</span></div>
-                <div class="d-row"><span>Expiry Date:</span> <span>${currentTargetData.exp}</span></div>
-                <div class="d-row"><span>CVV Number:</span> <span>${cvv}</span></div>
-                <div class="d-row"><span>ATM PIN:</span> <span>${pin}</span></div>
-                <div class="d-row"><span>Bank Name:</span> <span>${rBank}</span></div>
-                <div class="d-row"><span>Card Type:</span> <span>${rType}</span></div>
-                <div class="d-row"><span>Country:</span> <span>${rCountry}</span></div>
-            `;
-        }
-
-        function closeCheckout() {
-            document.getElementById('checkout-overlay').style.display = 'none';
-        }
-    </script>
 </body>
 </html>
