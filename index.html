@@ -13,8 +13,6 @@
   --gold: #d6b66e;
   --gold-light: #f1d99e;
   --bg: #090909;
-  --panel: #141414;
-  --muted: #999;
   --white: #f7f3e9;
 }
 * { box-sizing: border-box; }
@@ -165,11 +163,20 @@ header {
   font-style: italic;
   color: #f4e5c2;
 }
+
+/* Updated long CC balance box */
 .balance-line {
+  width: 100%;
+  min-height: 43px;
   display: flex;
   align-items: center;
-  gap: 9px;
+  justify-content: center;
+  gap: 12px;
   margin-top: 17px;
+  padding: 9px 16px;
+  border: 1px solid rgba(214,182,110,.38);
+  border-radius: 7px;
+  background: linear-gradient(110deg,rgba(214,182,110,.055),rgba(255,255,255,.015));
   color: #aaa;
   font-size: 11px;
   letter-spacing: 1.2px;
@@ -180,13 +187,18 @@ header {
   font-weight: 700;
   letter-spacing: .2px;
 }
+
+/* Updated long, centred Buy Now button */
 .buy-row {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   margin-top: 13px;
+  width: 100%;
 }
 .buy-btn {
-  min-width: 165px;
+  width: 86%;
+  min-width: 0;
+  max-width: 390px;
   padding: 13px 20px;
   border: 0;
   border-radius: 8px;
@@ -200,8 +212,13 @@ header {
   box-shadow: 0 4px 15px rgba(214,182,110,.15);
   transition: .2s;
 }
-.buy-btn:hover { transform: translateY(-2px); filter: brightness(1.08); }
-.buy-btn.free { background: linear-gradient(120deg,#eee1bf,#c9b27c); }
+.buy-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+.buy-btn.free {
+  background: linear-gradient(120deg,#eee1bf,#c9b27c);
+}
 footer {
   text-align: center;
   color: #686868;
@@ -210,6 +227,7 @@ footer {
   border-top: 1px solid #222;
   line-height: 1.7;
 }
+
 /* Checkout */
 .modal {
   display: none;
@@ -290,7 +308,11 @@ footer {
   min-width: 164px;
   min-height: 164px;
 }
-#qrcode { display: flex; align-items: center; justify-content: center; }
+#qrcode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 #qrcode img, #qrcode canvas { max-width: 150px; }
 .scan-note {
   text-align: center;
@@ -373,9 +395,12 @@ footer {
 @media(max-width:380px) {
   .product { padding: 13px; }
   .credit-card { padding: 15px; }
-  .balance-line { font-size: 10px; }
+  .balance-line {
+    font-size: 10px;
+    gap: 9px;
+  }
   .balance-value { font-size: 15px; }
-  .buy-btn { min-width: 145px; }
+  .buy-btn { width: 92%; }
 }
 </style>
 </head>
@@ -421,7 +446,7 @@ footer {
       <button class="confirm-btn" onclick="requestVerification()">I'VE COMPLETED PAYMENT</button>
       <p class="payment-note">
         Your payment will be verified after confirmation from the payment gateway.
-        Your sample or order details will appear here once verification is complete.
+        Your eligible order details will appear here once verification is complete.
       </p>
       <div class="status" id="paymentStatus"></div>
     </div>
@@ -454,7 +479,6 @@ const names = [
 const products = [];
 let nextBalance = 4500;
 
-// Free sample product
 products.push({
   id: "FREE-TEST",
   price: 0,
@@ -463,8 +487,6 @@ products.push({
   free: true
 });
 
-// Prices from ₹300 to ₹2,500 in ₹50 increments.
-// Each new price level adds a varying ₹1,500–₹2,500.
 for (let price = 300; price <= 2500; price += 50) {
   const increase = 1500 + ((price / 50 * 173) % 1001);
   nextBalance += increase;
@@ -490,7 +512,7 @@ function renderProducts(filter = "all") {
   container.innerHTML = "";
 
   products.filter(p => filter === "all" || p.network === filter)
-  .forEach((p, index) => {
+  .forEach(p => {
     const originalIndex = products.indexOf(p);
     const networkName = p.network === "visa" ? "VISA" : "MASTERCARD";
 
@@ -651,10 +673,6 @@ function requestVerification() {
   status.textContent =
     "Your payment verification request has been submitted. Once payment is confirmed by the payment gateway, verification usually takes 1–2 minutes. Your eligible order details will then appear on screen.";
   status.classList.add("show");
-
-  // This front-end page cannot independently verify UPI payments.
-  // Connect a real payment gateway and server-side verification webhook
-  // before treating a paid order as successful.
 }
 
 function showSampleReceipt() {
