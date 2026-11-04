@@ -3,319 +3,284 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CARD VAULT | SECURE</title>
+    <title>DARK VAULT | Premium Cards</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Rajdhani:wght@500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&family=Inter:wght@400;600&display=swap');
         
         :root {
-            --bg-color: #050a15;
-            --card-bg: #0a1329;
-            --accent: #00d0ff;
-            --text-main: #ffffff;
-            --text-muted: #6b84b5;
+            --bg-color: #030712;
+            --card-container: #0b1120;
+            --accent: #00f0ff;
+            --text-main: #f3f4f6;
+            --text-muted: #6b7280;
         }
         
-        body {
-            font-family: 'Rajdhani', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-        }
-
-        /* STORE PAGE STYLES */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            background: #040812;
-            border-bottom: 1px solid #112244;
-        }
-        .header h1 {
-            margin: 0;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 20px;
-            color: var(--accent);
-            letter-spacing: 2px;
-        }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 0; }
         
-        .filters {
-            display: flex;
-            gap: 10px;
-            padding: 15px 20px;
-        }
-        .filter-btn {
-            background: #11254a;
-            color: var(--accent);
-            border: 1px solid #1d3d7a;
-            padding: 5px 15px;
-            border-radius: 15px;
-            font-size: 14px;
-            font-weight: bold;
-        }
-        .filter-btn.active {
-            background: var(--accent);
-            color: #000;
-        }
+        /* HEADER */
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #000000; border-bottom: 1px solid #1f2937; }
+        .header h1 { margin: 0; font-family: 'Orbitron', sans-serif; font-size: 22px; color: var(--text-main); font-weight: 900;}
+        .header h1 span { color: var(--accent); }
+        .status { color: #10b981; font-size: 12px; font-weight: bold; display: flex; align-items: center; gap: 5px;}
+        .dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; }
 
-        .container {
-            padding: 0 15px 20px 15px;
-        }
+        .container { padding: 20px 15px; }
 
-        .cc-item {
-            background: var(--card-bg);
-            border: 1px solid #142a59;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0, 208, 255, 0.05);
-        }
+        .cc-item { background: var(--card-container); border: 1px solid #1f2937; border-radius: 16px; padding: 15px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
-        .cc-graphic {
-            background: linear-gradient(135deg, #e0e0e0, #ffffff);
-            border-radius: 10px;
-            padding: 15px;
-            color: #000;
-            position: relative;
-            margin-bottom: 15px;
-            overflow: hidden;
-        }
-        .cc-graphic.gold { background: linear-gradient(135deg, #d4af37, #fdf09d); }
-        
-        .chip {
-            width: 35px;
-            height: 25px;
-            background: #ccc;
-            border-radius: 4px;
-            margin-bottom: 10px;
-            background-image: repeating-linear-gradient(90deg, transparent, transparent 10px, #999 10px, #999 11px);
-        }
-        
-        .cc-number { font-size: 18px; font-family: 'Orbitron', monospace; letter-spacing: 2px; margin-bottom: 10px;}
-        
-        .cc-bottom { display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; text-transform: uppercase;}
-        
-        .brand-logo { position: absolute; top: 15px; right: 15px; font-weight: 900; font-style: italic; font-size: 16px; color: #1a1a1a;}
-
-        .cc-details {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            font-size: 14px;
-        }
-        .cc-details span { color: var(--accent); font-weight: bold; }
-
-        .buy-btn {
-            background: linear-gradient(90deg, #0055ff, var(--accent));
-            color: #000;
-            border: none;
-            padding: 14px;
+        /* REALISTIC PHYSICAL CARD DESIGN */
+        .physical-card {
             width: 100%;
-            font-size: 16px;
-            font-weight: 800;
-            border-radius: 8px;
-            cursor: pointer;
-            text-transform: uppercase;
-        }
-
-        /* CHECKOUT PAGE STYLES */
-        #checkout-page {
-            display: none;
-            text-align: center;
+            height: 180px;
+            border-radius: 14px;
             padding: 20px;
-            min-height: 100vh;
-        }
-        .back-btn {
-            background: none;
-            border: none;
-            color: var(--accent);
-            font-size: 24px;
-            position: absolute;
-            left: 20px;
-            top: 20px;
-            cursor: pointer;
-        }
-        
-        .checkout-title { color: var(--text-muted); font-size: 14px; margin-top: 40px; font-weight: bold; letter-spacing: 1px;}
-        .pay-amount { font-size: 48px; color: var(--accent); font-family: 'Orbitron', sans-serif; font-weight: bold; margin: 10px 0;}
-        
-        .selected-product {
-            background: #11254a;
-            border: 1px solid var(--accent);
-            display: inline-block;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 14px;
-            color: var(--text-main);
-            margin-bottom: 20px;
-        }
-
-        .order-info {
-            display: flex;
-            justify-content: space-between;
-            background: #0a1329;
-            border: 1px solid #1d3d7a;
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
-        .order-info span { color: var(--accent); font-weight: bold; }
-
-        .qr-container {
-            background: #fff;
-            padding: 15px;
-            border-radius: 15px;
-            display: inline-block;
-            box-shadow: 0 0 30px rgba(0, 208, 255, 0.2);
+            box-sizing: border-box;
             position: relative;
-        }
-        .qr-container img { width: 220px; height: 220px; }
-        
-        .or-text { margin: 30px 0 15px 0; color: var(--text-muted); font-size: 12px; letter-spacing: 1px; font-weight: bold;}
-
-        .app-grid {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-        .app-btn {
-            background: #0a1329;
-            border: 1px solid #1d3d7a;
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
+            margin-bottom: 20px;
+            color: #fff;
+            box-shadow: inset 0 0 20px rgba(255,255,255,0.1), 0 5px 15px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-main);
-            text-decoration: none;
-            font-size: 11px;
-            font-weight: bold;
+            justify-content: space-between;
         }
-        .app-btn:hover { border-color: var(--accent); }
+        
+        /* Background Variations */
+        .bg-blue { background: linear-gradient(135deg, #0f172a, #1e3a8a, #000000); }
+        .bg-gold { background: linear-gradient(135deg, #422006, #b45309, #fcd34d); color: #000; }
+        .bg-dark { background: linear-gradient(135deg, #000000, #111827, #374151); }
+        .bg-green { background: linear-gradient(135deg, #064e3b, #047857, #000); }
+
+        .card-top { display: flex; justify-content: space-between; align-items: flex-start; }
+        .chip { width: 45px; height: 32px; background: linear-gradient(135deg, #fbbf24, #d97706); border-radius: 6px; box-shadow: inset 0 0 5px rgba(0,0,0,0.5); background-image: repeating-linear-gradient(90deg, transparent, transparent 10px, rgba(0,0,0,0.2) 10px, rgba(0,0,0,0.2) 11px); }
+        .contactless { font-size: 20px; transform: rotate(90deg); margin-left: 10px; font-weight: bold; opacity: 0.7;}
+        .brand { font-size: 18px; font-weight: 900; font-style: italic; font-family: 'Orbitron', sans-serif;}
+
+        .card-mid { margin-top: 25px; }
+        .cc-number { font-family: 'Share Tech Mono', monospace; font-size: 20px; letter-spacing: 3px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+        
+        .card-bottom { display: flex; justify-content: space-between; text-transform: uppercase; font-size: 13px; font-family: 'Share Tech Mono', monospace; opacity: 0.9;}
+
+        .info-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; padding: 0 5px;}
+        .info-row span { font-weight: bold; color: var(--accent); }
+
+        .buy-btn { background: var(--accent); color: #000; border: none; padding: 15px; width: 100%; font-size: 16px; font-weight: 900; border-radius: 8px; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
+        .buy-btn:active { transform: scale(0.98); }
+
+        /* CHECKOUT MODAL */
+        #checkout-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3,7,18,0.95); z-index: 100; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; overflow-y: auto;}
+        .checkout-box { background: var(--card-container); border: 1px solid #1f2937; width: 100%; max-width: 400px; border-radius: 16px; padding: 25px; text-align: center; }
+        
+        .c-title { color: var(--text-muted); font-size: 12px; font-weight: bold; margin-bottom: 5px; letter-spacing: 1px;}
+        .c-amount { font-family: 'Orbitron', sans-serif; font-size: 40px; color: var(--accent); font-weight: 900; margin-bottom: 20px;}
+        
+        .qr-area { background: #fff; padding: 15px; border-radius: 12px; display: inline-block; margin: 20px 0; }
+        .qr-area img { width: 200px; height: 200px; }
+
+        .upi-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;}
+        .upi-btn { background: #1f2937; color: #fff; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 14px;}
+        
+        .verify-btn { background: #10b981; color: #000; width: 100%; padding: 15px; border: none; border-radius: 8px; font-weight: 900; font-size: 16px; margin-top: 10px; cursor: pointer;}
+        
+        .loader { display: none; margin: 20px auto; width: 40px; height: 40px; border: 4px solid #1f2937; border-top: 4px solid var(--accent); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* SUCCESS SCREEN & GENERATED DETAILS */
+        #success-screen { display: none; text-align: left; }
+        .success-check { width: 60px; height: 60px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 15px auto; color: #000;}
+        .details-box { background: #000; border: 1px dashed var(--accent); padding: 20px; border-radius: 8px; font-family: 'Share Tech Mono', monospace; font-size: 14px; line-height: 1.8; color: #10b981; margin-top: 20px;}
+        .d-row { display: flex; justify-content: space-between; border-bottom: 1px solid #1f2937; padding: 8px 0;}
+        .d-row span:last-child { color: #fff; font-weight: bold;}
     </style>
 </head>
 <body>
 
-    <!-- STORE PAGE -->
-    <div id="store-page">
-        <div class="header">
-            <h1>CARD VAULT</h1>
-            <div style="color:var(--accent); font-size:12px;">🛡️ SECURE</div>
-        </div>
-
-        <div class="filters">
-            <div class="filter-btn active">ALL</div>
-            <div class="filter-btn">VISA</div>
-            <div class="filter-btn">MASTERCARD</div>
-        </div>
-
-        <div class="container" id="cards-container">
-            <!-- Cards will be generated here automatically via JavaScript -->
-        </div>
+    <div class="header">
+        <h1>DARK<span>VAULT</span></h1>
+        <div class="status"><div class="dot"></div> ONLINE</div>
     </div>
 
-    <!-- CHECKOUT PAGE -->
-    <div id="checkout-page">
-        <button class="back-btn" onclick="closeCheckout()">←</button>
-        <h1 style="font-family:'Orbitron'; font-size: 18px; margin-top:5px;">CARD VAULT</h1>
-        
-        <div class="checkout-title">AMOUNT TO PAY</div>
-        <div class="pay-amount" id="display-amount">₹300</div>
-        
-        <div class="selected-product" id="display-product">VISA Card Product ₹300</div>
+    <div class="container" id="store-front">
+        <!-- The Free testing card and premium cards will be injected here -->
+    </div>
 
-        <div class="order-info">
-            <div>Balance: <span id="display-balance">₹15,088</span></div>
-            <div>Order ID: <span id="display-orderid">ORD915814</span></div>
-        </div>
+    <!-- CHECKOUT & VERIFICATION OVERLAY -->
+    <div id="checkout-overlay">
+        <div class="checkout-box">
+            
+            <button onclick="closeCheckout()" style="float:left; background:none; border:none; color:var(--text-muted); font-size:20px;">✖</button>
+            <div style="clear:both;"></div>
 
-        <div class="checkout-title" style="margin-top:0; margin-bottom:15px;">SCAN & PAY VIA UPI</div>
-        
-        <div class="qr-container">
-            <img id="qr-image" src="" alt="QR Code">
-        </div>
+            <div id="payment-view">
+                <div class="c-title">ORDER AMOUNT</div>
+                <div class="c-amount" id="chk-amount">₹300</div>
+                <div style="background:#1f2937; padding:8px; border-radius:8px; font-size:14px; margin-bottom:15px;" id="chk-item"></div>
 
-        <div class="or-text">OR OPEN APPLICATION</div>
+                <div class="qr-area">
+                    <img id="chk-qr" src="" alt="Scan QR">
+                </div>
 
-        <div class="app-grid">
-            <a href="#" id="upi-link-1" class="app-btn">Paytm</a>
-            <a href="#" id="upi-link-2" class="app-btn">GPay</a>
-            <a href="#" id="upi-link-3" class="app-btn">PhonePe</a>
+                <div class="c-title">OR OPEN APP DIRECTLY</div>
+                <div class="upi-buttons">
+                    <a href="#" class="upi-btn" id="upi-gpay">GPay</a>
+                    <a href="#" class="upi-btn" id="upi-paytm">Paytm</a>
+                </div>
+
+                <button class="verify-btn" onclick="startVerification()">I HAVE PAID</button>
+            </div>
+
+            <!-- Fake Loading State -->
+            <div id="loading-view" style="display:none; padding:40px 0;">
+                <div class="loader" style="display:block;"></div>
+                <h3 style="color:var(--accent);">Verifying Blockchain Transaction...</h3>
+                <p style="color:var(--text-muted); font-size:14px;">Please wait while we confirm payment.</p>
+            </div>
+
+            <!-- Final Delivery Details -->
+            <div id="success-screen">
+                <div class="success-check">✓</div>
+                <h2 style="text-align:center; color:#10b981; margin:0;">Transaction Complete</h2>
+                <p style="text-align:center; color:var(--text-muted); font-size:14px; margin-bottom:20px;">Card details successfully cracked and delivered.</p>
+
+                <div class="details-box" id="generated-details">
+                    <!-- Data injected by JS -->
+                </div>
+
+                <button class="buy-btn" style="margin-top:20px;" onclick="closeCheckout()">BACK TO STORE</button>
+            </div>
         </div>
     </div>
 
     <script>
         // ==========================================
-        // BAS APNA UPI ID YAHAN LIKHO (Quotes " " ke andar)
+        // ENTER YOUR UPI ID HERE:
         const MY_UPI_ID = "ephylz@ptsbi"; 
         // ==========================================
 
-        const indianNames = ["Shivam Kumar", "Rohit Sharma", "Priya Singh", "Amit Patel", "Neha Gupta", "Vikram Singh", "Rahul Verma", "Anjali Desai"];
+        const westernNames = ["Alexander Wright", "Jason Miller", "Victoria Vance", "Christopher Nolan", "Elena Rodriguez", "David Chen", "Sarah Jenkins", "Michael O'Connor"];
         const brands = ["VISA", "MasterCard"];
+        const bgs = ["bg-blue", "bg-gold", "bg-dark", "bg-green"];
         
-        // Auto-generate cards from ₹300 to ₹2000 in ₹50 increments
-        const container = document.getElementById('cards-container');
-        
-        for(let price = 300; price <= 2000; price += 50) {
-            let randomName = indianNames[Math.floor(Math.random() * indianNames.length)];
-            let randomBrand = brands[Math.floor(Math.random() * brands.length)];
-            let randomBal = Math.floor(Math.random() * 35) + 15; // Random balance 15k to 50k
-            let randomVal = Math.floor(Math.random() * 4) + 26; // Valid 26-29
-            let isGold = Math.random() > 0.5 ? 'gold' : '';
+        let storeHTML = "";
 
-            let cardHTML = `
-            <div class="cc-item">
-                <div class="cc-graphic ${isGold}">
-                    <div class="brand-logo">${randomBrand}</div>
-                    <div class="chip"></div>
-                    <div class="cc-number">4${Math.floor(Math.random()*899+100)} **** **** ****</div>
-                    <div class="cc-bottom">
-                        <div>${randomName}</div>
-                        <div>12/${randomVal}</div>
-                    </div>
-                </div>
-                <div class="cc-details">
-                    <div>Balance: <span>₹${randomBal},000</span></div>
-                    <div>Active Status: <span style="color:#00ff88">Verified</span></div>
-                </div>
-                <button class="buy-btn" onclick="initiateCheckout(${price}, '₹${randomBal},000', '${randomBrand}')">
-                    Buy ₹${price} Product
-                </button>
-            </div>`;
+        // 1. ADD A FREE TESTING CARD
+        storeHTML += createCardHTML(0, "FREE TESTING CARD", 50, "Jason Miller", "VISA", "bg-dark");
+
+        // 2. GENERATE CARDS (₹300 to ₹1000)
+        let currentBalance = 250; // Starting Balance logic
+        for(let price = 300; price <= 1000; price += 50) {
+            let rName = westernNames[Math.floor(Math.random() * westernNames.length)];
+            let rBrand = brands[Math.floor(Math.random() * brands.length)];
+            let rBg = bgs[Math.floor(Math.random() * bgs.length)];
             
-            container.innerHTML += cardHTML;
+            storeHTML += createCardHTML(price, `Premium CC`, currentBalance, rName, rBrand, rBg);
+            currentBalance += 85; // Balance scales correctly as price goes up
         }
 
-        function initiateCheckout(price, balance, brand) {
-            document.getElementById('store-page').style.display = 'none';
-            document.getElementById('checkout-page').style.display = 'block';
-            window.scrollTo(0, 0);
+        document.getElementById('store-front').innerHTML = storeHTML;
 
-            document.getElementById('display-amount').innerText = `₹${price}`;
-            document.getElementById('display-product').innerText = `${brand} Card Product ₹${price}`;
-            document.getElementById('display-balance').innerText = balance;
-            document.getElementById('display-orderid').innerText = 'ORD' + Math.floor(Math.random() * 900000 + 100000);
+        // Function to build the card UI
+        function createCardHTML(price, label, bal, name, brand, bgClass) {
+            let p1 = Math.floor(1000 + Math.random() * 9000);
+            let p2 = Math.floor(1000 + Math.random() * 9000);
+            let p3 = Math.floor(1000 + Math.random() * 9000);
+            let exp = `12/${Math.floor(26 + Math.random() * 4)}`; // Valid 2026-2029
 
-            // Create UPI Link with AMOUNT LOCK (&am=)
-            let upiString = `upi://pay?pa=${MY_UPI_ID}&pn=CardVault&am=${price}.00&cu=INR`;
+            return `
+            <div class="cc-item">
+                <div class="physical-card ${bgClass}">
+                    <div class="card-top">
+                        <div style="display:flex;"><div class="chip"></div><div class="contactless">)))</div></div>
+                        <div class="brand">${brand}</div>
+                    </div>
+                    <div class="card-mid">
+                        <!-- ONLY LAST 4 DIGITS HIDDEN -->
+                        <div class="cc-number">${p1} ${p2} ${p3} ****</div>
+                    </div>
+                    <div class="card-bottom">
+                        <div>${name}</div>
+                        <div>VALID THRU<br>${exp}</div>
+                    </div>
+                </div>
+                
+                <div class="info-row">
+                    <div>Guaranteed Balance: <span>$${bal}.00</span></div>
+                </div>
+                <div class="info-row">
+                    <div>Network: <span>${brand} International</span></div>
+                </div>
+
+                <button class="buy-btn" onclick="openCheckout(${price}, '${name}', '${brand}', '${exp}')">
+                    ${price === 0 ? 'CLAIM FREE TEST CARD' : `Buy ₹${price} Card`}
+                </button>
+            </div>`;
+        }
+
+        // Checkout Logic
+        let currentTargetData = {};
+
+        function openCheckout(price, name, brand, exp) {
+            currentTargetData = { price, name, brand, exp };
             
-            // Fix for QR code not locking amount: Properly encode the URL so the QR API reads it correctly
-            let encodedUpi = encodeURIComponent(upiString);
-            document.getElementById('qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodedUpi}`;
+            document.getElementById('checkout-overlay').style.display = 'flex';
+            document.getElementById('payment-view').style.display = 'block';
+            document.getElementById('loading-view').style.display = 'none';
+            document.getElementById('success-screen').style.display = 'none';
 
-            // Update bottom buttons
-            document.getElementById('upi-link-1').href = upiString;
-            document.getElementById('upi-link-2').href = upiString;
-            document.getElementById('upi-link-3').href = upiString;
+            document.getElementById('chk-amount').innerText = `₹${price}`;
+            document.getElementById('chk-item').innerText = `${brand} Premium Card - ${name}`;
+
+            let upiString = `upi://pay?pa=${MY_UPI_ID}&pn=DarkVault&am=${price}.00&cu=INR`;
+            let encodedUpi = encodeURIComponent(upiString);
+            
+            document.getElementById('chk-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodedUpi}`;
+            document.getElementById('upi-gpay').href = upiString;
+            document.getElementById('upi-paytm').href = upiString;
+        }
+
+        function startVerification() {
+            document.getElementById('payment-view').style.display = 'none';
+            document.getElementById('loading-view').style.display = 'block';
+
+            // Fake 3 second loading screen
+            setTimeout(() => {
+                generateFinalDetails();
+            }, 3000);
+        }
+
+        function generateFinalDetails() {
+            document.getElementById('loading-view').style.display = 'none';
+            document.getElementById('success-screen').style.display = 'block';
+
+            const banks = ["Chase Bank", "Bank of America", "Barclays", "HSBC", "Wells Fargo", "Citibank"];
+            const countries = ["United States", "United Kingdom", "Canada", "Australia"];
+            const types = ["Credit - Signature", "Credit - Platinum", "Debit - Business"];
+
+            let rBank = banks[Math.floor(Math.random() * banks.length)];
+            let rCountry = countries[Math.floor(Math.random() * countries.length)];
+            let rType = types[Math.floor(Math.random() * types.length)];
+            
+            // Generate full 16 digits
+            let fullNum = `4${Math.floor(100+Math.random()*899)} ${Math.floor(1000+Math.random()*9000)} ${Math.floor(1000+Math.random()*9000)} ${Math.floor(1000+Math.random()*9000)}`;
+            let cvv = Math.floor(100 + Math.random() * 899);
+            let pin = Math.floor(1000 + Math.random() * 9000);
+
+            document.getElementById('generated-details').innerHTML = `
+                <div class="d-row"><span>Cardholder Name:</span> <span>${currentTargetData.name}</span></div>
+                <div class="d-row"><span>Card Number:</span> <span>${fullNum}</span></div>
+                <div class="d-row"><span>Expiry Date:</span> <span>${currentTargetData.exp}</span></div>
+                <div class="d-row"><span>CVV Number:</span> <span>${cvv}</span></div>
+                <div class="d-row"><span>ATM PIN:</span> <span>${pin}</span></div>
+                <div class="d-row"><span>Bank Name:</span> <span>${rBank}</span></div>
+                <div class="d-row"><span>Card Type:</span> <span>${rType}</span></div>
+                <div class="d-row"><span>Country:</span> <span>${rCountry}</span></div>
+            `;
         }
 
         function closeCheckout() {
-            document.getElementById('checkout-page').style.display = 'none';
-            document.getElementById('store-page').style.display = 'block';
+            document.getElementById('checkout-overlay').style.display = 'none';
         }
     </script>
 </body>
