@@ -164,60 +164,57 @@ header {
   color: #f4e5c2;
 }
 
-/* Updated long CC balance box */
+/* Slim, refined CC balance box */
 .balance-line {
   width: 100%;
-  min-height: 43px;
+  min-height: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  margin-top: 17px;
-  padding: 9px 16px;
-  border: 1px solid rgba(214,182,110,.38);
-  border-radius: 7px;
-  background: linear-gradient(110deg,rgba(214,182,110,.055),rgba(255,255,255,.015));
+  gap: 10px;
+  margin-top: 14px;
+  padding: 6px 13px;
+  border: 1px solid rgba(214,182,110,.32);
+  border-radius: 6px;
+  background: rgba(214,182,110,.035);
   color: #aaa;
-  font-size: 11px;
-  letter-spacing: 1.2px;
+  font-size: 10px;
+  letter-spacing: 1.1px;
 }
 .balance-value {
   color: var(--gold-light);
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: .2px;
 }
 
-/* Updated long, centred Buy Now button */
+/* Slimmer, centred Buy Now button */
 .buy-row {
   display: flex;
   justify-content: center;
-  margin-top: 13px;
+  margin-top: 10px;
   width: 100%;
 }
 .buy-btn {
-  width: 86%;
+  width: 100%;
+  max-width: none;
   min-width: 0;
-  max-width: 390px;
-  padding: 13px 20px;
-  border: 0;
-  border-radius: 8px;
+  padding: 10px 16px;
+  border: 1px solid rgba(255,230,180,.25);
+  border-radius: 6px;
   background: linear-gradient(120deg,#f0d99e,#bd984f);
   color: #17120a;
   font-family: 'DM Sans',sans-serif;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
-  letter-spacing: .7px;
+  letter-spacing: .6px;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(214,182,110,.15);
+  box-shadow: 0 3px 12px rgba(214,182,110,.12);
   transition: .2s;
 }
 .buy-btn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
   filter: brightness(1.08);
-}
-.buy-btn.free {
-  background: linear-gradient(120deg,#eee1bf,#c9b27c);
 }
 footer {
   text-align: center;
@@ -373,34 +370,21 @@ footer {
   text-align: center;
 }
 .status.show { display: block; }
-.receipt {
-  display: none;
-  margin-top: 15px;
-  border: 1px solid #66512e;
-  background: #211d15;
-  border-radius: 10px;
-  padding: 15px;
-}
-.receipt.show { display: block; }
-.receipt h3 {
-  color: var(--gold-light);
-  margin: 0 0 10px;
-  font-family: 'Playfair Display',serif;
-}
-.receipt p {
-  font-size: 12px;
-  color: #d3c7aa;
-  margin: 8px 0;
-}
+
 @media(max-width:380px) {
   .product { padding: 13px; }
   .credit-card { padding: 15px; }
   .balance-line {
-    font-size: 10px;
-    gap: 9px;
+    min-height: 33px;
+    font-size: 9px;
+    gap: 8px;
+    padding: 5px 10px;
   }
-  .balance-value { font-size: 15px; }
-  .buy-btn { width: 92%; }
+  .balance-value { font-size: 14px; }
+  .buy-btn {
+    padding: 9px 12px;
+    font-size: 13px;
+  }
 }
 </style>
 </head>
@@ -450,19 +434,6 @@ footer {
       </p>
       <div class="status" id="paymentStatus"></div>
     </div>
-
-    <div class="receipt" id="sampleReceipt">
-      <h3>Sample Profile</h3>
-      <p><strong>Holder:</strong> <span id="sampleName"></span></p>
-      <p><strong>Card Number:</strong> <span id="sampleNumber"></span></p>
-      <p><strong>Expiry:</strong> 12/29</p>
-      <p><strong>Issuer:</strong> Aurevia Sample Issuer</p>
-      <p><strong>Network:</strong> <span id="sampleNetwork"></span></p>
-      <p><strong>Country:</strong> Sample / Fictional</p>
-      <p style="font-size:10px;color:#a99b7b">
-        This is a fictional, non-functional sample profile. It is not a bank-issued card.
-      </p>
-    </div>
   </div>
 </div>
 
@@ -470,22 +441,8 @@ footer {
 const UPI_ID = "ephylz@ptsbi";
 const UPI_NAME = "Aurevia Cards";
 
-const names = [
-  "Oliver Bennett", "Ethan Carter", "Noah Williams",
-  "Liam Anderson", "Lucas Mitchell", "James Parker",
-  "Henry Morgan", "Daniel Brooks", "Benjamin Reed"
-];
-
 const products = [];
 let nextBalance = 4500;
-
-products.push({
-  id: "FREE-TEST",
-  price: 0,
-  balance: 4500,
-  network: "visa",
-  free: true
-});
 
 for (let price = 300; price <= 2500; price += 50) {
   const increase = 1500 + ((price / 50 * 173) % 1001);
@@ -495,8 +452,7 @@ for (let price = 300; price <= 2500; price += 50) {
     id: "AUR-" + price,
     price,
     balance: nextBalance,
-    network: (price / 50) % 2 === 0 ? "visa" : "mastercard",
-    free: false
+    network: (price / 50) % 2 === 0 ? "visa" : "mastercard"
   });
 }
 
@@ -545,8 +501,8 @@ function renderProducts(filter = "all") {
       </div>
 
       <div class="buy-row">
-        <button class="buy-btn ${p.free ? "free" : ""}" onclick="openCheckout('${p.id}')">
-          ${p.free ? "TRY FREE" : "BUY NOW " + money(p.price)}
+        <button class="buy-btn" onclick="openCheckout('${p.id}')">
+          BUY NOW ${money(p.price)}
         </button>
       </div>
     `;
@@ -579,23 +535,15 @@ function openCheckout(id) {
   document.getElementById("checkoutBalance").textContent =
     money(selectedProduct.balance);
   document.getElementById("checkoutPrice").textContent =
-    selectedProduct.free ? "FREE" : money(selectedProduct.price);
+    money(selectedProduct.price);
   document.getElementById("orderId").textContent =
     "AUR" + Date.now().toString().slice(-9);
 
   document.getElementById("paymentStatus").classList.remove("show");
-  document.getElementById("sampleReceipt").classList.remove("show");
+  document.getElementById("paymentStatus").textContent = "";
 
-  const paymentArea = document.getElementById("paymentArea");
-
-  if (selectedProduct.free) {
-    paymentArea.style.display = "none";
-    showSampleReceipt();
-  } else {
-    paymentArea.style.display = "block";
-    createUPI();
-    startTimer();
-  }
+  createUPI();
+  startTimer();
 }
 
 function closeCheckout() {
@@ -645,9 +593,10 @@ function startTimer() {
 
     if (secondsRemaining <= 0) {
       clearInterval(timerInterval);
-      document.getElementById("paymentStatus").textContent =
+      const status = document.getElementById("paymentStatus");
+      status.textContent =
         "Payment session expired. Please close checkout and start again.";
-      document.getElementById("paymentStatus").classList.add("show");
+      status.classList.add("show");
     }
   }, 1000);
 }
@@ -662,30 +611,18 @@ function updateTimer() {
 }
 
 function requestVerification() {
+  const status = document.getElementById("paymentStatus");
+
   if (secondsRemaining <= 0) {
-    const status = document.getElementById("paymentStatus");
-    status.textContent = "Your payment session has expired. Please start a new order.";
+    status.textContent =
+      "Your payment session has expired. Please start a new order.";
     status.classList.add("show");
     return;
   }
 
-  const status = document.getElementById("paymentStatus");
   status.textContent =
     "Your payment verification request has been submitted. Once payment is confirmed by the payment gateway, verification usually takes 1–2 minutes. Your eligible order details will then appear on screen.";
   status.classList.add("show");
-}
-
-function showSampleReceipt() {
-  const sampleName = names[Math.floor(Math.random() * names.length)];
-  const sampleNumber = "XXXX XXXX XXXX " +
-    String(Math.floor(1000 + Math.random() * 9000));
-
-  document.getElementById("sampleName").textContent = sampleName;
-  document.getElementById("sampleNumber").textContent = sampleNumber;
-  document.getElementById("sampleNetwork").textContent =
-    selectedProduct.network.toUpperCase();
-
-  document.getElementById("sampleReceipt").classList.add("show");
 }
 
 renderProducts();
