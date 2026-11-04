@@ -135,9 +135,11 @@ header {
   margin-top: 18px;
   border: 1px solid rgba(255,255,255,.3);
 }
+
+/* Slightly larger masked card number */
 .card-number {
-  font-size: clamp(14px,4vw,19px);
-  letter-spacing: 2px;
+  font-size: clamp(15px,4.2vw,20px);
+  letter-spacing: 2.4px;
   margin-top: 17px;
   color: #f6e9cb;
 }
@@ -149,10 +151,12 @@ header {
   position: relative;
   z-index: 1;
 }
+
+/* Slightly larger cardholder name */
 .card-holder-name {
-  font-size: clamp(9px,2.5vw,11px);
+  font-size: clamp(10px,2.7vw,12px);
   font-weight: 600;
-  letter-spacing: .8px;
+  letter-spacing: .9px;
   color: #f6e9cb;
   text-transform: uppercase;
 }
@@ -422,6 +426,13 @@ footer {
 @media(max-width:380px) {
   .product { padding: 13px; }
   .credit-card { padding: 15px; }
+  .card-number {
+    font-size: 15px;
+    letter-spacing: 2.2px;
+  }
+  .card-holder-name {
+    font-size: 10px;
+  }
   .balance-line {
     min-height: 33px;
     font-size: 9px;
@@ -502,7 +513,6 @@ footer {
 const UPI_ID = "ephylz@ptsbi";
 const UPI_NAME = "Aurevia Cards";
 
-/* 45 unique fictional American-style cardholder names */
 const cardholderNames = [
   "JAMES CARTER",
   "OLIVIA BENNETT",
@@ -554,7 +564,6 @@ const cardholderNames = [
 const products = [];
 let nextBalance = 4500;
 
-// Collection starts at ₹300. No free product is created.
 for (let price = 300; price <= 2500; price += 50) {
   const increase = 1500 + ((price / 50 * 173) % 1001);
   nextBalance += increase;
@@ -596,9 +605,7 @@ function renderProducts(filter = "all") {
         <div class="card-glow"></div>
         <div class="card-brand">AUREVIA</div>
         <div class="card-chip"></div>
-
         <div class="card-number">${maskedNumber(originalIndex)}</div>
-
         <div class="card-bottom">
           <div>
             <div class="card-holder-name">${cardholderNames[originalIndex]}</div>
