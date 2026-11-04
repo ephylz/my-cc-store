@@ -145,18 +145,27 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: end;
-  margin-top: 17px;
+  margin-top: 12px;
   position: relative;
   z-index: 1;
 }
 .card-holder {
-  font-size: 9px;
+  font-size: 8px;
   letter-spacing: 1.5px;
   color: #e0d2b4;
+}
+.card-holder-name {
+  font-size: clamp(9px,2.5vw,11px);
+  font-weight: 600;
+  letter-spacing: .7px;
+  color: #f6e9cb;
+  margin-top: 3px;
+  white-space: nowrap;
 }
 .card-valid {
   font-size: 10px;
   color: #e0d2b4;
+  margin-top: 5px;
 }
 .card-network {
   font-size: 20px;
@@ -499,6 +508,55 @@ footer {
 const UPI_ID = "ephylz@ptsbi";
 const UPI_NAME = "Aurevia Cards";
 
+/* Unique fictional American-style names for the card previews */
+const cardholderNames = [
+  "James Carter",
+  "Olivia Bennett",
+  "Ethan Brooks",
+  "Charlotte Hayes",
+  "Noah Mitchell",
+  "Amelia Foster",
+  "Liam Parker",
+  "Sophia Reynolds",
+  "Mason Cooper",
+  "Ava Sullivan",
+  "Lucas Morgan",
+  "Isabella Reed",
+  "Benjamin Collins",
+  "Mia Thompson",
+  "Henry Bailey",
+  "Evelyn Ross",
+  "Alexander Price",
+  "Harper Ward",
+  "Daniel Hughes",
+  "Abigail Perry",
+  "Matthew Kelly",
+  "Emily Sanders",
+  "Jackson Powell",
+  "Elizabeth Long",
+  "Sebastian Gray",
+  "Ella James",
+  "David Watson",
+  "Grace Butler",
+  "Joseph Bryant",
+  "Lily Coleman",
+  "Samuel Jenkins",
+  "Chloe Barnes",
+  "Owen Fisher",
+  "Natalie Simmons",
+  "Gabriel Howard",
+  "Zoey Patterson",
+  "Andrew Russell",
+  "Hannah Griffin",
+  "Christopher Diaz",
+  "Madison Flores",
+  "Ryan Henderson",
+  "Victoria West",
+  "Nathaniel Scott",
+  "Claire Murphy",
+  "Dylan Edwards"
+];
+
 const products = [];
 let nextBalance = 4500;
 
@@ -548,6 +606,7 @@ function renderProducts(filter = "all") {
         <div class="card-bottom">
           <div>
             <div class="card-holder">CARD MEMBER</div>
+            <div class="card-holder-name">${cardholderNames[originalIndex]}</div>
             <div class="card-valid">VALID THRU &nbsp; 12/29</div>
           </div>
           <div class="card-network">${networkName}</div>
@@ -665,8 +724,8 @@ function updateTimer() {
 }
 
 function showVerifyingPopup() {
-  // This is a waiting-state preview only.
-  // Real payment verification must be performed by a payment gateway.
+  // Visual waiting state only; no payment verification is performed.
+  // Real payment verification requires a connected payment gateway.
   document.getElementById("verifyOverlay").classList.add("show");
 }
 
@@ -674,3 +733,4 @@ renderProducts();
 </script>
 </body>
 </html>
+
