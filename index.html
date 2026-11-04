@@ -572,8 +572,9 @@ function maskedNumber(index) {
   const part1 = String(1200 + ((seed * 137) % 8799)).padStart(4, "0");
   const part2 = String(1100 + ((seed * 293) % 8899)).padStart(4, "0");
   const part3 = String(2100 + ((seed * 419) % 7899)).padStart(4, "0");
+  const part4 = String(1300 + ((seed * 587) % 8699)).padStart(4, "0");
 
-  return `${part1} ${part2} ${part3} •••••`;
+  return `${part1} ${part2} ${part3} ${part4} •••••`;
 }
 
 function renderProducts(filter = "all") {
