@@ -564,9 +564,16 @@ for (let price = 300; price <= 2500; price += 50) {
 
 const money = amount => "₹" + Number(amount).toLocaleString("en-IN");
 
-/* Shows 12 fictional placeholder digits and masks only the final 4. */
+/* Unique fictional display numbers for each card.
+   These are decorative placeholders, not payment credentials. */
 function maskedNumber(index) {
-  return "0000 0000 0000 ••••";
+  const seed = index + 1;
+
+  const part1 = String(1200 + ((seed * 137) % 8799)).padStart(4, "0");
+  const part2 = String(1100 + ((seed * 293) % 8899)).padStart(4, "0");
+  const part3 = String(2100 + ((seed * 419) % 7899)).padStart(4, "0");
+
+  return `${part1} ${part2} ${part3} •••••`;
 }
 
 function renderProducts(filter = "all") {
