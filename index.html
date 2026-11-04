@@ -3,109 +3,320 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verified CC Vendor</title>
+    <title>CARD VAULT | SECURE</title>
     <style>
-        :root { --primary: #00ff88; --bg-dark: #0a0a0c; --card-bg: #141418; --text-main: #ffffff; }
-        body { font-family: -apple-system, sans-serif; background-color: var(--bg-dark); color: var(--text-main); margin: 0; padding: 0; }
-        header { width: 100%; background: #000; padding: 15px 0; text-align: center; border-bottom: 1px solid #222; font-size: 24px; font-weight: 900; letter-spacing: 2px; }
-        header span { color: var(--primary); }
-        .container { max-width: 500px; width: 90%; margin: 20px auto; display: flex; flex-direction: column; gap: 20px; }
-        .product-card { background: var(--card-bg); border: 1px solid #2a2a35; border-radius: 12px; padding: 25px; text-align: center; position: relative; overflow: hidden; }
-        .badge { position: absolute; top: 12px; right: -30px; background: var(--primary); color: #000; padding: 5px 35px; font-size: 11px; font-weight: bold; transform: rotate(45deg); }
-        .balance { font-size: 28px; font-weight: 800; margin: 10px 0; }
-        .price { font-size: 24px; color: var(--primary); font-weight: bold; margin: 15px 0; }
-        button { background: var(--primary); color: #000; border: none; padding: 14px; width: 100%; font-size: 16px; font-weight: 900; border-radius: 8px; cursor: pointer; text-transform: uppercase; }
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Rajdhani:wght@500;700&display=swap');
         
-        /* Payment Modal */
-        #checkout-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 999; align-items: center; justify-content: center; }
-        .payment-box { background: var(--card-bg); border: 1px solid #333; border-radius: 12px; padding: 25px; width: 90%; max-width: 350px; text-align: center; }
-        .qr-code { width: 200px; height: 200px; display: block; margin: 15px auto; border-radius: 10px; }
-        .upi-btn { display: block; background: #fff; color: #000; text-decoration: none; padding: 14px; border-radius: 8px; font-weight: bold; margin-top: 15px; }
-        .loader { border: 4px solid #333; border-top: 4px solid var(--primary); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        :root {
+            --bg-color: #050a15;
+            --card-bg: #0a1329;
+            --accent: #00d0ff;
+            --text-main: #ffffff;
+            --text-muted: #6b84b5;
+        }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* STORE PAGE STYLES */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: #040812;
+            border-bottom: 1px solid #112244;
+        }
+        .header h1 {
+            margin: 0;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            color: var(--accent);
+            letter-spacing: 2px;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 10px;
+            padding: 15px 20px;
+        }
+        .filter-btn {
+            background: #11254a;
+            color: var(--accent);
+            border: 1px solid #1d3d7a;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .filter-btn.active {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .container {
+            padding: 0 15px 20px 15px;
+        }
+
+        .cc-item {
+            background: var(--card-bg);
+            border: 1px solid #142a59;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 208, 255, 0.05);
+        }
+
+        .cc-graphic {
+            background: linear-gradient(135deg, #e0e0e0, #ffffff);
+            border-radius: 10px;
+            padding: 15px;
+            color: #000;
+            position: relative;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        .cc-graphic.gold { background: linear-gradient(135deg, #d4af37, #fdf09d); }
+        
+        .chip {
+            width: 35px;
+            height: 25px;
+            background: #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            background-image: repeating-linear-gradient(90deg, transparent, transparent 10px, #999 10px, #999 11px);
+        }
+        
+        .cc-number { font-size: 18px; font-family: 'Orbitron', monospace; letter-spacing: 2px; margin-bottom: 10px;}
+        
+        .cc-bottom { display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; text-transform: uppercase;}
+        
+        .brand-logo { position: absolute; top: 15px; right: 15px; font-weight: 900; font-style: italic; font-size: 16px; color: #1a1a1a;}
+
+        .cc-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+        .cc-details span { color: var(--accent); font-weight: bold; }
+
+        .buy-btn {
+            background: linear-gradient(90deg, #0055ff, var(--accent));
+            color: #000;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 800;
+            border-radius: 8px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        /* CHECKOUT PAGE STYLES */
+        #checkout-page {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--accent);
+            font-size: 24px;
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            cursor: pointer;
+        }
+        
+        .checkout-title { color: var(--text-muted); font-size: 14px; margin-top: 40px; font-weight: bold; letter-spacing: 1px;}
+        .pay-amount { font-size: 48px; color: var(--accent); font-family: 'Orbitron', sans-serif; font-weight: bold; margin: 10px 0;}
+        
+        .selected-product {
+            background: #11254a;
+            border: 1px solid var(--accent);
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: var(--text-main);
+            margin-bottom: 20px;
+        }
+
+        .order-info {
+            display: flex;
+            justify-content: space-between;
+            background: #0a1329;
+            border: 1px solid #1d3d7a;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        .order-info span { color: var(--accent); font-weight: bold; }
+
+        .qr-container {
+            background: #fff;
+            padding: 15px;
+            border-radius: 15px;
+            display: inline-block;
+            box-shadow: 0 0 30px rgba(0, 208, 255, 0.2);
+            position: relative;
+        }
+        .qr-container img { width: 220px; height: 220px; }
+        
+        .or-text { margin: 30px 0 15px 0; color: var(--text-muted); font-size: 12px; letter-spacing: 1px; font-weight: bold;}
+
+        .app-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .app-btn {
+            background: #0a1329;
+            border: 1px solid #1d3d7a;
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        .app-btn:hover { border-color: var(--accent); }
     </style>
 </head>
 <body>
 
-    <header>DARK<span>STORE</span></header>
+    <!-- STORE PAGE -->
+    <div id="store-page">
+        <div class="header">
+            <h1>CARD VAULT</h1>
+            <div style="color:var(--accent); font-size:12px;">🛡️ SECURE</div>
+        </div>
 
-    <div class="container">
+        <div class="filters">
+            <div class="filter-btn active">ALL</div>
+            <div class="filter-btn">VISA</div>
+            <div class="filter-btn">MASTERCARD</div>
+        </div>
+
+        <div class="container" id="cards-container">
+            <!-- Cards will be generated here automatically via JavaScript -->
+        </div>
+    </div>
+
+    <!-- CHECKOUT PAGE -->
+    <div id="checkout-page">
+        <button class="back-btn" onclick="closeCheckout()">←</button>
+        <h1 style="font-family:'Orbitron'; font-size: 18px; margin-top:5px;">CARD VAULT</h1>
         
-        <!-- ITEM 1 -->
-        <div class="product-card">
-            <h3 style="margin:0; color:#888;">Starter CC</h3>
-            <div class="balance">$200.00 Balance</div>
-            <div class="price">₹50</div>
-            <button onclick="initiateCheckout('₹50', '50.00')">Buy Starter</button>
+        <div class="checkout-title">AMOUNT TO PAY</div>
+        <div class="pay-amount" id="display-amount">₹300</div>
+        
+        <div class="selected-product" id="display-product">VISA Card Product ₹300</div>
+
+        <div class="order-info">
+            <div>Balance: <span id="display-balance">₹15,088</span></div>
+            <div>Order ID: <span id="display-orderid">ORD915814</span></div>
         </div>
 
-        <!-- ITEM 2 -->
-        <div class="product-card">
-            <div class="badge">BEST SELLER</div>
-            <h3 style="margin:0; color:#888;">Premium CC</h3>
-            <div class="balance">$1,000.00 Balance</div>
-            <div class="price">₹100</div>
-            <button onclick="initiateCheckout('₹100', '100.00')">Buy Premium</button>
+        <div class="checkout-title" style="margin-top:0; margin-bottom:15px;">SCAN & PAY VIA UPI</div>
+        
+        <div class="qr-container">
+            <img id="qr-image" src="" alt="QR Code">
         </div>
 
-        <!-- ITEM 3 -->
-        <div class="product-card">
-            <h3 style="margin:0; color:#888;">Elite CC</h3>
-            <div class="balance">$5,000.00 Balance</div>
-            <div class="price">₹300</div>
-            <button onclick="initiateCheckout('₹300', '300.00')">Buy Elite</button>
-        </div>
+        <div class="or-text">OR OPEN APPLICATION</div>
 
-    </div>
-
-    <!-- Checkout Modal -->
-    <div id="checkout-overlay">
-        <div class="payment-box">
-            <div id="loading-state">
-                <h3 style="color: var(--primary);">Securing Connection...</h3>
-                <div class="loader"></div>
-            </div>
-
-            <div id="qr-state" style="display: none;">
-                <h3>Awaiting Payment</h3>
-                <p style="font-size: 14px; color: #888;">Scan to pay <b id="display-price" style="color: #fff;"></b></p>
-                
-                <!-- QR CODE IMAGE SETTING -->
-                <img id="qr-image" src="my-qr.jpg" class="qr-code" alt="QR Code">
-                
-                <a id="dynamic-upi" href="#" class="upi-btn">Pay via UPI App</a>
-                <button onclick="closeCheckout()" style="background: #333; color: #fff; margin-top: 15px;">Cancel</button>
-            </div>
+        <div class="app-grid">
+            <a href="#" id="upi-link-1" class="app-btn">Paytm</a>
+            <a href="#" id="upi-link-2" class="app-btn">GPay</a>
+            <a href="#" id="upi-link-3" class="app-btn">PhonePe</a>
         </div>
     </div>
 
-        <script>
-        function initiateCheckout(displayPrice, upiAmount) {
-            // JUST TYPE YOUR REAL UPI ID HERE (Keep it inside the " " quotes)
-            var upiId = "ephylz@ptsbi"; 
-            
-            // This line automatically generates a real QR code using your UPI ID! No image upload needed.
-            var qrName = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=" + upiId + "&pn=DarkStore&am=" + upiAmount + "&cu=INR";
+    <script>
+        // ==========================================
+        // BAS APNA UPI ID YAHAN LIKHO (Quotes " " ke andar)
+        const MY_UPI_ID = "ephylz@ptsbi"; 
+        // ==========================================
 
-            document.getElementById('qr-image').src = qrName;
-            document.getElementById('checkout-overlay').style.display = 'flex';
-            document.getElementById('loading-state').style.display = 'block';
-            document.getElementById('qr-state').style.display = 'none';
-            document.getElementById('display-price').innerText = displayPrice;
-            
-            var upiLink = "upi://pay?pa=" + upiId + "&pn=DarkStore&am=" + upiAmount + "&cu=INR";
-            document.getElementById('dynamic-upi').href = upiLink;
+        const indianNames = ["Shivam Kumar", "Rohit Sharma", "Priya Singh", "Amit Patel", "Neha Gupta", "Vikram Singh", "Rahul Verma", "Anjali Desai"];
+        const brands = ["VISA", "MasterCard"];
+        
+        // Auto-generate cards from ₹300 to ₹2000 in ₹50 increments
+        const container = document.getElementById('cards-container');
+        
+        for(let price = 300; price <= 2000; price += 50) {
+            let randomName = indianNames[Math.floor(Math.random() * indianNames.length)];
+            let randomBrand = brands[Math.floor(Math.random() * brands.length)];
+            let randomBal = Math.floor(Math.random() * 35) + 15; // Random balance 15k to 50k
+            let randomVal = Math.floor(Math.random() * 4) + 26; // Valid 26-29
+            let isGold = Math.random() > 0.5 ? 'gold' : '';
 
-            setTimeout(() => {
-                document.getElementById('loading-state').style.display = 'none';
-                document.getElementById('qr-state').style.display = 'block';
-            }, 2000);
+            let cardHTML = `
+            <div class="cc-item">
+                <div class="cc-graphic ${isGold}">
+                    <div class="brand-logo">${randomBrand}</div>
+                    <div class="chip"></div>
+                    <div class="cc-number">4${Math.floor(Math.random()*899+100)} **** **** ****</div>
+                    <div class="cc-bottom">
+                        <div>${randomName}</div>
+                        <div>12/${randomVal}</div>
+                    </div>
+                </div>
+                <div class="cc-details">
+                    <div>Balance: <span>₹${randomBal},000</span></div>
+                    <div>Active Status: <span style="color:#00ff88">Verified</span></div>
+                </div>
+                <button class="buy-btn" onclick="initiateCheckout(${price}, '₹${randomBal},000', '${randomBrand}')">
+                    Buy ₹${price} Product
+                </button>
+            </div>`;
+            
+            container.innerHTML += cardHTML;
+        }
+
+        function initiateCheckout(price, balance, brand) {
+            document.getElementById('store-page').style.display = 'none';
+            document.getElementById('checkout-page').style.display = 'block';
+            window.scrollTo(0, 0);
+
+            document.getElementById('display-amount').innerText = `₹${price}`;
+            document.getElementById('display-product').innerText = `${brand} Card Product ₹${price}`;
+            document.getElementById('display-balance').innerText = balance;
+            document.getElementById('display-orderid').innerText = 'ORD' + Math.floor(Math.random() * 900000 + 100000);
+
+            // Create UPI Link with AMOUNT LOCK (&am=)
+            let upiString = `upi://pay?pa=${MY_UPI_ID}&pn=CardVault&am=${price}.00&cu=INR`;
+            
+            // Fix for QR code not locking amount: Properly encode the URL so the QR API reads it correctly
+            let encodedUpi = encodeURIComponent(upiString);
+            document.getElementById('qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodedUpi}`;
+
+            // Update bottom buttons
+            document.getElementById('upi-link-1').href = upiString;
+            document.getElementById('upi-link-2').href = upiString;
+            document.getElementById('upi-link-3').href = upiString;
         }
 
         function closeCheckout() {
-            document.getElementById('checkout-overlay').style.display = 'none';
+            document.getElementById('checkout-page').style.display = 'none';
+            document.getElementById('store-page').style.display = 'block';
         }
     </script>
-
 </body>
 </html>
